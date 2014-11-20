@@ -259,7 +259,7 @@ namespace HydroDesktop.Plugins.MainPlugin
         /// Creates a new 'empty' project
         /// </summary>
         public void CreateEmptyProject() {
-            App.Map.Layers.Clear();
+            App.SerializationManager.New();
         }
 
         //saves the current HydroDesktop project file to the user specified location

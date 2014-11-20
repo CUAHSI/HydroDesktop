@@ -110,6 +110,7 @@
                         return;
                     case DialogResult.No:
                         // Do nothing, exit without saving
+                        e.Cancel = false;
                         return;
                     case DialogResult.Yes:
                         // Save and exit

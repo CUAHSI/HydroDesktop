@@ -28,13 +28,15 @@ namespace HydroDesktop.Plugins.MainPlugin
         /// <summary>
         /// Gets the list tools available.
         /// </summary>
-        public IEnumerable<ISampleProject> SampleProjects { get; set; }
+        public List<object> SampleProjects { get; set; }
         
         #region Private Variables
-        
-        private List<ProjectFileInfo> _recentProjectFiles;
+
+        private List<object> onlineProjects = new List<object>();
+        private List<ProjectFileInfo> _recentProjectFiles = new List<ProjectFileInfo>();
         private AppManager _app;
         private bool _newProjectCreated = false;
+        private readonly string _newProject = "New Project";
         private readonly string _localHelpUri = Properties.Settings.Default.localHelpUri;
         private readonly string _remoteHelpUri = Properties.Settings.Default.remoteHelpUri;
         private readonly string _quickStartUri = Properties.Settings.Default.quickStartUri;
@@ -59,23 +61,26 @@ namespace HydroDesktop.Plugins.MainPlugin
             lblProductVersion.Text = "CUAHSI HydroDesktop " + AppContext.Instance.ProductVersion;
             
             _app = projManager.App;
-            _recentProjectFiles = new List<ProjectFileInfo>();
-            bsRecentFiles = new BindingSource(RecentProjectFiles, null);
-            lstRecentProjects.DataSource = bsRecentFiles;
 
-            lstRecentProjects.DoubleClick += lstRecentProjects_DoubleClick;
-            lstProjectTemplates.DoubleClick += lstProjectTemplates_DoubleClick;
+            lstProjectTemplates.Click += lstProjectTemplates_Click;
+            lstProjectTemplates.KeyDown += lstProjectTemplates_KeyDown;
             FormClosing += WelcomeScreen_FormClosing;
 
             if (lstProjectTemplates.Items.Count > 0)
             {
                 lstProjectTemplates.SelectedIndex = 0;
             }
-            uxFeedSelection.SelectedIndexChanged += uxFeedSelection_SelectedIndexChanged;
-            this.uxOnlineProjects.SelectedIndexChanged += new EventHandler(this.uxOnlineProjects_SelectedIndexChanged);
-            this.uxFeedSelection.SelectedIndex = 0;
+
+            packages.SetNewSource("https://www.myget.org/F/cuahsi/");
+            UpdatePackageList();
             downloadDialog.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             downloadDialog.Icon = HydroDesktop.Plugins.MainPlugin.Properties.Resources.download_icon;
+        }
+
+        private void lstProjectTemplates_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                lstProjectTemplates_Click(sender, e);
         }
 
         #endregion
@@ -108,7 +113,7 @@ namespace HydroDesktop.Plugins.MainPlugin
             {
                 if (lstProjectTemplates.SelectedIndex < 0)
                 {
-                    MessageBox.Show("Please select a project template.");
+                    MessageBox.Show("Please select a project.");
                     DialogResult = DialogResult.None;
                     return;
                 }
@@ -185,14 +190,7 @@ namespace HydroDesktop.Plugins.MainPlugin
         {
             panelStatus.Visible = true;
             myProjectManager.CreateEmptyProject();
-            
-
-            SetDefaultMapExtents();
-
-            this.Cursor = Cursors.Default;
-
             _newProjectCreated = true;
-
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -240,51 +238,14 @@ namespace HydroDesktop.Plugins.MainPlugin
 
         #region Event Handlers
 
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            if (rbNewProjectTemplate.Checked)
-            {
-                CreateProjectFromTemplate();
-            }
-            else if (rbEmptyProject.Checked)
-            {
-                CreateEmptyProject();
-            }
-            else
-            {
-                OpenProject();
-            }
-            panelStatus.Visible = true;
-            //_app.ProgressHandler.
-        }
-
         private void WelcomeScreen_Load(object sender, EventArgs e)
         {
-            SampleProjectInstaller spi = new SampleProjectInstaller();
-            List<SampleProjectInfo> sampleProjects1 = spi.FindSampleProjectFiles();
-       
-            IEnumerable<ISampleProject> sampleProjects2 = spi.SetupInstalledSampleProjects(sampleProjects1);
-
-            
-            SampleProjects = sampleProjects2;
-            FindRecentProjectFiles();
-
-            IEnumerable<ISampleProject> sampleProjects3 = new List<ISampleProject>();
-            ((List<ISampleProject>)sampleProjects3).AddRange(SampleProjects);
-            ((List<ISampleProject>)sampleProjects3).AddRange(RecentProjectFiles);
-            SampleProjects = sampleProjects3;
-
-            lstProjectTemplates.DataSource = SampleProjects;
-            lstProjectTemplates.DisplayMember = "Name";
             UpdateInstalledProjectsList();
         }
-
-        
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             FeatureSet fs = new FeatureSet();
-            //fs.Features[0].Coordinates[0].X
         }
 
         private void btnBrowseProject_Click(object sender, EventArgs e)
@@ -294,18 +255,50 @@ namespace HydroDesktop.Plugins.MainPlugin
             fileDialog.Title = "Select the Project File to Open";
             if (fileDialog.ShowDialog() == DialogResult.OK)
             {
+                this.Cursor = Cursors.WaitCursor;
                 OpenExistingProject(fileDialog.FileName);
+                this.Cursor = Cursors.Default;
             }
         }
 
-        void lstRecentProjects_DoubleClick(object sender, EventArgs e)
+        private void lstProjectTemplates_Click(object sender, EventArgs e)
         {
-            OpenProject();
-        }
+            var item = lstProjectTemplates.SelectedItem;
 
-        void lstProjectTemplates_DoubleClick(object sender, EventArgs e)
-        {
-            CreateProjectFromTemplate();
+            if (!(item is string) || item as string == _newProject)
+            {
+                //if the map is empty or if the current project is already saved, start a new project
+                if (!_app.SerializationManager.IsDirty || _app.Map.Layers == null || _app.Map.Layers.Count == 0)
+                {
+                }
+                else if (String.IsNullOrEmpty(_app.SerializationManager.CurrentProjectFile))
+                {
+                    //if the current project is not specified - just ask to discard changes
+                    if (MessageBox.Show("Start a new Project?", "Discard Changes?", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        return;
+                }
+                else
+                {
+                    //the current project is specified - ask the users if they want to save changes to current project
+                    string saveProjectMessage = String.Format("Save changes to current project [{0}] ?", Path.GetFileName(_app.SerializationManager.CurrentProjectFile));
+                    DialogResult msgBoxResult = MessageBox.Show(saveProjectMessage, "Discard Changes?", MessageBoxButtons.YesNoCancel);
+
+                    if (msgBoxResult == DialogResult.Yes)
+                        _app.SerializationManager.SaveProject(_app.SerializationManager.CurrentProjectFile);
+
+                    if (msgBoxResult == DialogResult.Cancel)
+                        return;
+                }
+
+                if (item as string == _newProject)
+                    CreateEmptyProject();
+                else if (item is ISampleProject && item is ProjectFileInfo)
+                    OpenProject();
+                else if (item is ISampleProject)
+                    CreateProjectFromTemplate();
+                else if (item is IPackage)
+                    InstallSampleProject();
+            }
         }
 
         private void WelcomeScreen_FormClosing(object sender, FormClosingEventArgs e)
@@ -327,11 +320,13 @@ namespace HydroDesktop.Plugins.MainPlugin
 
         private void OpenProject()
         {
-            ProjectFileInfo selected = lstRecentProjects.SelectedValue as ProjectFileInfo;
+            ProjectFileInfo selected = lstProjectTemplates.SelectedValue as ProjectFileInfo;
             if (selected != null)
             {
                 panelStatus.Visible = true;
+                this.Cursor = Cursors.WaitCursor;
                 OpenExistingProject(selected.FullPath);
+                this.Cursor = Cursors.Default;
             }
         }
 
@@ -386,42 +381,43 @@ namespace HydroDesktop.Plugins.MainPlugin
                 RecentProjectFiles.Add(new ProjectFileInfo(recentFile));
             }
 
-            //also adds the installed 'sample projects' to the directory
-            //SetupSampleProjects();
-
             bsRecentFiles.ResetBindings(false);
-            lstRecentProjects.SelectedIndex = -1;
         }
 
         private void UpdateInstalledProjectsList()
         {
-
-            this.SampleProjects = this.FindSampleProjectFiles();
-            if (!NuGet.EnumerableExtensions.Any<SampleProjectInfo>(((List<SampleProjectInfo>)this.SampleProjects)))
-            {
-                if (RecentProjectFiles.Count == 0)
-                {
-                    this.lstProjectTemplates.DataSource = null;
-                    this.lstProjectTemplates.Items.Add("No projects were found. \nPlease install the online templates.");
-                    return;
-                }
-            }
+            int index = lstProjectTemplates.SelectedIndex;
             SampleProjectInstaller spi = new SampleProjectInstaller();
-            List<SampleProjectInfo> sampleProjects1 = spi.FindSampleProjectFiles();
-
-            IEnumerable<ISampleProject> sampleProjects2 = spi.SetupInstalledSampleProjects(sampleProjects1);
-            SampleProjects = sampleProjects2;
+            SampleProjects = new List<object>();
 
             FindRecentProjectFiles();
-            IEnumerable<ISampleProject> sampleProjects3 = new List<ISampleProject>();
-            ((List<ISampleProject>)sampleProjects3).AddRange(SampleProjects);
-            ((List<ISampleProject>)sampleProjects3).AddRange(RecentProjectFiles);
-            SampleProjects = sampleProjects3;
+            SampleProjects.Add("Recent Projects:");
+            SampleProjects.Add(_newProject);
+            SampleProjects.AddRange(RecentProjectFiles);
+
+            List<ISampleProject> templates = spi.SetupInstalledSampleProjects(spi.FindSampleProjectFiles()).ToList();
+            if (templates.Count > 0)
+            {
+                SampleProjects.Add("Templates:");
+                SampleProjects.AddRange(templates);
+            }
+            if (onlineProjects.Count > 0)
+            {
+                SampleProjects.Add("Online:");
+                foreach (var item in onlineProjects)
+                {
+                    if (item is IPackage && !HydroDesktop.Plugins.MainPlugin.WelcomeScreen.IsPackageInstalled(item as IPackage))
+                        SampleProjects.Add(item);
+                    else if (item is string)
+                        SampleProjects.Add(item);
+                }
+            }
+            if (SampleProjects.IsEmpty())
+                SampleProjects.Add("Could not find any project files.");
 
             this.lstProjectTemplates.DataSource = this.SampleProjects;
             this.lstProjectTemplates.DisplayMember = "Name";
-            this.uxOnlineProjects.SelectedIndex = 0;
-            this.btnInstall.Enabled = true;
+            lstProjectTemplates.SelectedIndex = index;
         }
 
         private IEnumerable<SampleProjectInfo> FindSampleProjectFiles()
@@ -445,7 +441,8 @@ namespace HydroDesktop.Plugins.MainPlugin
 
         private void UpdatePackageList()
         {
-            this.uxOnlineProjects.Items.Add("Loading...");
+            onlineProjects.Clear();
+            onlineProjects.Add("Loading...");
             Task<IPackage[]> task = Task.Factory.StartNew<IPackage[]>(delegate
             {
                 return (
@@ -455,64 +452,14 @@ namespace HydroDesktop.Plugins.MainPlugin
             });
             task.ContinueWith(delegate(Task<IPackage[]> t)
             {
-                this.uxOnlineProjects.Items.Clear();
+                onlineProjects.Clear();
                 if (t.Exception == null)
-                {
-                    this.uxOnlineProjects.Items.AddRange(t.Result);
-                    return;
-                }
-                this.uxOnlineProjects.Items.Add(t.Exception.Message);
+                    onlineProjects.AddRange(t.Result);
+                UpdateInstalledProjectsList();
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void UninstallSampleProject(SampleProjectInfo sample)
-        {
-            if (this._app.SerializationManager.CurrentProjectFile == sample.AbsolutePathToProjectFile)
-            {
-                MessageBox.Show("Cannot uninstall " + sample.Name + ". The project is currently open. Please close current project and try again.");
-                return;
-            }
-            string directoryName = Path.GetDirectoryName(sample.AbsolutePathToProjectFile);
-            DirectoryInfo parent = Directory.GetParent(directoryName);
-            try
-            {
-                foreach (string current in Directory.EnumerateFiles(directoryName))
-                {
-                    File.Delete(current);
-                }
-                Directory.Delete(directoryName);
-                FileInfo[] files = parent.GetFiles();
-                for (int i = 0; i < files.Length; i++)
-                {
-                    FileInfo fileInfo = files[i];
-                    fileInfo.Delete();
-                }
-                if (!NuGet.EnumerableExtensions.Any<DirectoryInfo>(parent.GetDirectories()) && !NuGet.EnumerableExtensions.Any<FileInfo>(parent.GetFiles()))
-                {
-                    parent.Delete();
-                }
-            }
-            catch (IOException ex)
-            {
-                MessageBox.Show("Some files could not be uninstalled. " + ex.Message);
-            }
-            MessageBox.Show("The project was successfully uninstalled.");
-        }
         #endregion
-
-        private void btnUninstall_Click(object sender, EventArgs e)
-        {
-            SampleProjectInfo sample = findTemplate(this.uxOnlineProjects.SelectedItem as IPackage);
-           
-            this.UninstallSampleProject(sample);
-            this.UpdateInstalledProjectsList();
-
-            // This is used to refresh the view
-            int temp = uxOnlineProjects.SelectedIndex;
-            this.uxOnlineProjects.SelectedIndex += 1;
-            this.uxOnlineProjects.SelectedIndex = temp;
-            
-        }
 
         private SampleProjectInfo findTemplate(IPackage package)
         {
@@ -529,28 +476,10 @@ namespace HydroDesktop.Plugins.MainPlugin
             return null;
         }
 
-        private void uxFeedSelection_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string feedUrl;
-            if (uxFeedSelection.SelectedIndex == 1)
-                feedUrl = "https://nuget.org/api/v2/";
-            else
-                feedUrl = "https://www.myget.org/F/cuahsi/";
-
-            packages.SetNewSource(feedUrl);
-            this.UpdatePackageList();
-        }
-
-        private void lstRecentProjects_Click(object sender, EventArgs e)
-        {
-            rbOpenExistingProject.Checked = true;
-        }
-
         private void HelpButton_Click(object sender, EventArgs e)
         {
             try
             {
-
                 if (WebUtilities.IsInternetAvailable() == false)
                 {
                     LocalHelp.OpenHelpFile(_localHelpUri);
@@ -559,7 +488,6 @@ namespace HydroDesktop.Plugins.MainPlugin
                 {
                     OpenUri(_remoteHelpUri);    
                 }
-
             }
             catch (Exception ex)
             {
@@ -589,107 +517,87 @@ namespace HydroDesktop.Plugins.MainPlugin
                 MessageBox.Show("Could not open help file at " + _localHelpUri + "\n" + ex.Message, "Could not open help", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }         
         }
-        private void btnOKOnline_Click(object sender, EventArgs e)
+
+        private void InstallSampleProject()
         {
-            if (this.uxOnlineProjects.SelectedItem != null)
+            if (lstProjectTemplates.SelectedItem != null)
             {
-                this.btnInstall.Enabled = false;
+                this.Cursor = Cursors.WaitCursor;
                 downloadDialog.Show();
-                IPackage pack = this.uxOnlineProjects.SelectedItem as IPackage;
                 
+                IPackage pack = lstProjectTemplates.SelectedItem as IPackage;
+
                 var inactiveExtensions = _app.Extensions.Where(a => a.IsActive == false).ToArray();
 
-                Task task = Task.Factory.StartNew(delegate
+                IEnumerable<PackageDependency> dependency = pack.Dependencies;
+                if (dependency.Count() > 0)
                 {
-                    IEnumerable<PackageDependency> dependency = pack.Dependencies;
-                    if (dependency.Count() > 0)
+                    foreach (PackageDependency dependentPackage in dependency)
                     {
-                        foreach (PackageDependency dependentPackage in dependency)
-                        {
-                            _app.ProgressHandler.Progress(null, 0, "Downloading Dependency " + dependentPackage.Id);
-                            downloadDialog.ShowDownloadStatus(dependentPackage);
-                            downloadDialog.SetProgressBarPercent(0);
+                        _app.ProgressHandler.Progress(null, 0, "Downloading Dependency " + dependentPackage.Id);
+                        downloadDialog.ShowDownloadStatus(dependentPackage);
+                        downloadDialog.SetProgressBarPercent(0);
+                        downloadDialog.Refresh();
 
-                            var dependentpack = packages.Install(dependentPackage.Id);
-                            if (dependentpack == null)
-                            {
-                                string message = "We cannot download " + dependentPackage.Id + " Please make sure you are connected to the Internet.";
-                                MessageBox.Show(message);
-                                return;
-                            }
+                        var dependentpack = packages.Install(dependentPackage.Id);
+                        if (dependentpack == null)
+                        {
+                            string message = "We cannot download " + dependentPackage.Id + " Please make sure you are connected to the Internet.";
+                            MessageBox.Show(message);
+                            return;
                         }
                     }
+                }
 
-                    this._app.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
-                    downloadDialog.ShowDownloadStatus(pack);
-                    downloadDialog.SetProgressBarPercent(0);
+                this._app.ProgressHandler.Progress(null, 0, "Downloading " + pack.Title);
+                downloadDialog.ShowDownloadStatus(pack);
+                downloadDialog.SetProgressBarPercent(0);
+                downloadDialog.Refresh();
 
-                    this.packages.Install(pack.Id);
-                });
-                task.ContinueWith(delegate(Task t)
+                this.packages.Install(pack.Id);
+
+                _app.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
+                // Load the extension.
+                _app.RefreshExtensions();
+                _app.ProgressHandler.Progress(null, 50, "Installing " + pack.Title);
+
+                // Activate the extension(s) that was installed.
+                var extensions = _app.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
+
+                if (extensions.Count() > 0 && !_app.EnsureRequiredImportsAreAvailable())
+                    return;
+
+                foreach (var item in extensions)
                 {
-                    this._app.ProgressHandler.Progress(null, 0, "Installing " + pack.Title);
-                    this.UpdateInstalledProjectsList();
-                    // Load the extension.
-                    _app.RefreshExtensions();
-                    IEnumerable<PackageDependency> dependency = pack.Dependencies;
-                    _app.ProgressHandler.Progress(null, 50, "Installing " + pack.Title);
+                    item.TryActivate();
+                }
+                this._app.ProgressHandler.Progress(null, 0, "Ready.");
+                downloadDialog.Visible = false;
 
-                    // Activate the extension(s) that was installed.
-                    var extensions = _app.Extensions.Where(a => !inactiveExtensions.Contains(a) && a.IsActive == false);
-
-                    if (extensions.Count() > 0 && !_app.EnsureRequiredImportsAreAvailable())
-                        return;
-
-                    foreach (var item in extensions)
-                    {
-                        item.TryActivate();
-                    }
-                    this._app.ProgressHandler.Progress(null, 0, "Ready.");
-                    downloadDialog.Visible = false;
-
-                    // This is used to refresh the view
-                    int temp = uxOnlineProjects.SelectedIndex;
-                    this.uxOnlineProjects.SelectedIndex = temp + 1;
-                    this.uxOnlineProjects.SelectedIndex = temp;
-
-                }, TaskScheduler.FromCurrentSynchronizationContext());
-             
+                UpdateInstalledProjectsList();
+                selectDownloadedPackage(pack);
+                this.Cursor = Cursors.Default;
             }
         }
-        private void uxOnlineProjects_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void selectDownloadedPackage(IPackage pack)
         {
-            if (this.uxOnlineProjects.Items.Count == 0)
+            string packagePath = GetPackagePath(pack);
+            IEnumerable<string> files = Directory.EnumerateFiles(packagePath, "*.dspx", SearchOption.AllDirectories);
+            if (NuGet.EnumerableExtensions.Any<string>(files))
             {
-                this.btnInstall.Enabled = false;
-                this.btnInstall.Visible = true;
-                this.btnUninstall.Enabled = false;
-                this.btnUninstall.Visible = false;
-                return;
+                foreach (var item in SampleProjects)
+                {
+                    if (item is ISampleProject && Path.GetFileNameWithoutExtension(files.First()) == (item as ISampleProject).Name)
+                    {
+                        lstProjectTemplates.SelectedIndex = SampleProjects.IndexOf(item);
+                        CreateProjectFromTemplate();
+                        break;
+                    }
+                }
             }
-            IPackage package = this.uxOnlineProjects.SelectedItem as IPackage;
-            if (package == null)
-            {
-       
-                this.btnInstall.Enabled = false;
-                this.btnInstall.Visible = true;
-                this.btnUninstall.Enabled = false;
-                this.btnUninstall.Visible = false;
-                return;
-            }
-            if (IsPackageInstalled(package))
-            {
-                this.btnInstall.Visible = false;
-                this.btnInstall.Enabled = false;
-                this.btnUninstall.Enabled = true;
-                this.btnUninstall.Visible = true;
-                return;
-            }
-            this.btnInstall.Visible = true;
-            this.btnInstall.Enabled = true;
-            this.btnUninstall.Enabled = false;
-            this.btnUninstall.Visible = false;
         }
+
         public static bool IsPackageInstalled(IPackage pack)
         {
             string packagePath = GetPackagePath(pack);
@@ -703,10 +611,12 @@ namespace HydroDesktop.Plugins.MainPlugin
                 return false;
             }
         }
+
         private static string GetPackagePath(IPackage pack)
         {
             return Path.Combine(AppManager.AbsolutePathToExtensions, "Packages", GetPackageFolderName(pack));
         }
+
         private static string GetPackageFolderName(IPackage pack)
         {
             return string.Format("{0}.{1}", pack.Id, pack.Version);
@@ -770,10 +680,37 @@ namespace HydroDesktop.Plugins.MainPlugin
 
     public class CustomListBox : ListBox
     {
+        int mouseIndex = -1;
+
         public CustomListBox()
         {
-            this.DrawMode = DrawMode.OwnerDrawVariable; // We're using custom drawing.
-            this.ItemHeight = 14; // Set the item height to 40.
+            DoubleBuffered = true;
+            this.SetStyle(
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.UserPaint,
+                true);
+            this.DrawMode = DrawMode.OwnerDrawFixed; // We're using custom drawing.
+            this.ItemHeight = 16; // Set the item height to 14.
+            this.MouseMove += ListBox_MouseMove;
+        }
+
+        private void ListBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            int index = IndexFromPoint(e.Location);
+            if(index != mouseIndex)
+            {
+                if(mouseIndex > -1)
+                {
+                    int oldIndex = mouseIndex;
+                    mouseIndex = -1;
+                    if (oldIndex <= Items.Count - 1)
+                        Invalidate(GetItemRectangle(oldIndex));
+                }
+                mouseIndex = index;
+                if (mouseIndex > -1)
+                    Invalidate(GetItemRectangle(mouseIndex));
+            }
         }
 
         protected override void OnDrawItem(DrawItemEventArgs e)
@@ -782,138 +719,102 @@ namespace HydroDesktop.Plugins.MainPlugin
             if (e.Index >= this.Items.Count || e.Index <= -1)
                 return;
 
-            // Get the item object.
-            if(this.Items[e.Index] is ISampleProject)
-            {
-            
-            ISampleProject item = (ISampleProject)this.Items[e.Index];
+            object item = Items[e.Index];
+            string text = "";
+            SizeF stringSize = SizeF.Empty;
+
             if (item == null)
                 return;
+
+            Color backgroundColor = Color.White;
+            Color fontColor = Color.Black;
+
+            // Get the item object.
+            if (item is string && (item as string).Contains(':'))
+            {
+                text = item as string;
+                Font font = new Font(this.Font, FontStyle.Bold);
+                e.Graphics.FillRectangle(new SolidBrush(backgroundColor), e.Bounds);
+                stringSize = e.Graphics.MeasureString(text, font);
+                e.Graphics.DrawString(text, font, new SolidBrush(fontColor),
+                new PointF(0, e.Bounds.Y + (e.Bounds.Height - stringSize.Height)/2));
+                base.OnDrawItem(e);
+                return;
+            } else if (item is string)
+                text = item as string;
+            else if (item is ISampleProject)
+                text = ((ISampleProject)item).Name;
+            else if (item is IPackage)
+                text = ((IPackage)item).ToString();
 
             // Draw the background color depending on 
             // if the item is selected or not.
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
-                // The item is selected.
-                // We want a blue background color.
-                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(51, 153, 255)), e.Bounds);
-                // Draw the item.
-                string text = item.Name;
-                SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
-                e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.White),
-                    new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
-                if (!(item is ProjectFileInfo))
-                {
-                    e.Graphics.DrawImage(HydroDesktop.Plugins.MainPlugin.Properties.Resources.Template, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 2);
-                }
-                else 
-                {
-                    e.Graphics.DrawImage(HydroDesktop.Plugins.MainPlugin.Properties.Resources.recent_project, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 2);
-                }
+                backgroundColor = Color.FromArgb(51, 153, 255);
+                fontColor = Color.White;
             }
-            else
-            {
-                // The item is NOT selected.
-                // We want a white background color.
-                e.Graphics.FillRectangle(new SolidBrush(Color.White), e.Bounds);
-                // Draw the item.
-                string text = item.Name;
-                SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
-                e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.Black),
-                    new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
-                if (!(item is ProjectFileInfo))
-                {
-                    e.Graphics.DrawImage(HydroDesktop.Plugins.MainPlugin.Properties.Resources.Template, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 2);
-                }
-                else
-                {
-                    e.Graphics.DrawImage(HydroDesktop.Plugins.MainPlugin.Properties.Resources.recent_project, 0, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 2);
-                }
-            }
+            else if (mouseIndex > -1 && mouseIndex == e.Index)
+                backgroundColor = Color.LightBlue;
 
+            // The item is NOT selected.
+            // We want a white background color.
+            e.Graphics.FillRectangle(new SolidBrush(backgroundColor), e.Bounds);
+
+            // Draw the item.
+            stringSize = e.Graphics.MeasureString(text, this.Font);
+            e.Graphics.DrawString(text, this.Font, new SolidBrush(fontColor),
+                new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
+            if (item is ISampleProject && !(item is ProjectFileInfo))
+            {
+                Image image = HydroDesktop.Plugins.MainPlugin.Properties.Resources.Template;
+                e.Graphics.DrawImage(image, 0, (e.Bounds.Y + (e.Bounds.Height - image.Height) / 2));
+            }
+            else if (item is ISampleProject && item is ProjectFileInfo)
+            {
+                Image image = HydroDesktop.Plugins.MainPlugin.Properties.Resources.recent_project;
+                e.Graphics.DrawImage(image, 0, (e.Bounds.Y + (e.Bounds.Height - image.Height) / 2));
+            }
+            else if (item is IPackage && !HydroDesktop.Plugins.MainPlugin.WelcomeScreen.IsPackageInstalled(item as IPackage))
+            {
+                Image image = HydroDesktop.Plugins.MainPlugin.Properties.Resources.download;
+                e.Graphics.DrawImage(image, 0, (e.Bounds.Y + (e.Bounds.Height - image.Height) / 2));
+            }
+            base.OnDrawItem(e);
         }
-        else if (this.Items[e.Index] is string)
+
+        protected override void OnPaint(PaintEventArgs e)
         {
-            string text = this.Items[e.Index] as string;
-            SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
-            e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.Gray),
-            new PointF(0, e.Bounds.Y + (e.Bounds.Height - stringSize.Height/2) / 2));
-        }
+            Region iRegion = new Region(e.ClipRectangle);
+            e.Graphics.FillRegion(new SolidBrush(this.BackColor), iRegion);
+            if (this.Items.Count > 0)
+            {
+                for (int i = 0; i < this.Items.Count; ++i)
+                {
+                    System.Drawing.Rectangle irect = this.GetItemRectangle(i);
+                    if (e.ClipRectangle.IntersectsWith(irect))
+                    {
+                        if ((this.SelectionMode == SelectionMode.One && this.SelectedIndex == i)
+                        || (this.SelectionMode == SelectionMode.MultiSimple && this.SelectedIndices.Contains(i))
+                        || (this.SelectionMode == SelectionMode.MultiExtended && this.SelectedIndices.Contains(i)))
+                        {
+                            OnDrawItem(new DrawItemEventArgs(e.Graphics, this.Font,
+                                irect, i,
+                                DrawItemState.Selected, this.ForeColor,
+                                this.BackColor));
+                        }
+                        else
+                        {
+                            OnDrawItem(new DrawItemEventArgs(e.Graphics, this.Font,
+                                irect, i,
+                                DrawItemState.Default, this.ForeColor,
+                                this.BackColor));
+                        }
+                        iRegion.Complement(irect);
+                    }
+                }
+            }
+            base.OnPaint(e);
         }
     }
-
-    public class OnlineListBox : ListBox
-    {
-        public OnlineListBox()
-        {
-            this.DrawMode = DrawMode.OwnerDrawVariable; // We're using custom drawing.
-            this.ItemHeight = 14; // Set the item height to 40.
-        }
-
-        protected override void OnDrawItem(DrawItemEventArgs e)
-        {
-            // Make sure we're not trying to draw something that isn't there.
-            if (e.Index >= this.Items.Count || e.Index <= -1)
-                return;
-
-            // Get the item object.
-            string loading = this.Items[e.Index] as string;
-            if(loading != null) 
-            {
-                SizeF stringSize = e.Graphics.MeasureString(loading, this.Font);
-                e.Graphics.DrawString(loading, this.Font, new SolidBrush(Color.Black),
-                    new PointF(0, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
-            }
-            else 
-            {
-            IPackage item = (IPackage)this.Items[e.Index];
-            if (item == null)
-                return;
-
-            // Draw the background color depending on 
-            // if the item is selected or not.
-            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
-            {
-                // The item is selected.
-                // We want a blue background color.
-                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(51, 153, 255)), e.Bounds);
-                // Draw the item.
-                string text = item.ToString();
-                SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
-                e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.White),
-                    new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
-                if (HydroDesktop.Plugins.MainPlugin.WelcomeScreen.IsPackageInstalled(item))
-                {
-                    e.Graphics.DrawImage(HydroDesktop.Plugins.MainPlugin.Properties.Resources.check_mark, 2, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
-                }
-                else
-                {
-                    e.Graphics.DrawImage(HydroDesktop.Plugins.MainPlugin.Properties.Resources.download, 2, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
-                }
-            }
-            else
-            {
-                // The item is NOT selected.
-                // We want a white background color.
-                e.Graphics.FillRectangle(new SolidBrush(Color.White), e.Bounds);
-                // Draw the item.
-                string text = item.ToString();
-                SizeF stringSize = e.Graphics.MeasureString(text, this.Font);
-                e.Graphics.DrawString(text, this.Font, new SolidBrush(Color.Black),
-                    new PointF(15, e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2));
-                if (HydroDesktop.Plugins.MainPlugin.WelcomeScreen.IsPackageInstalled(item))
-                {
-                    e.Graphics.DrawImage(HydroDesktop.Plugins.MainPlugin.Properties.Resources.check_mark, 2, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
-                }
-                else
-                {
-                    e.Graphics.DrawImage(HydroDesktop.Plugins.MainPlugin.Properties.Resources.download, 2, (e.Bounds.Y + (e.Bounds.Height - stringSize.Height) / 2) + 1);
-                }
-            }
-
-
-        }
-        }
-    }
-
 }
