@@ -109,11 +109,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cd "$(ProjectDir)"
-"$(ProjectDir)..\..\.nuget\nuget.exe" pack
-move /y "*.nupkg" "$(TargetDir)"
-
-if $(ConfigurationName) == Release goto :release
+    <PostBuildEvent>if $(ConfigurationName) == Release goto :release
 
 md "$(TargetDir)..\DotSpatial.Plugins.Ribbon"
 move /y "$(TargetDir)DotSpatial.Plugins.Ribbon.*" "$(TargetDir)..\DotSpatial.Plugins.Ribbon\"
