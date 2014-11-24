@@ -111,6 +111,7 @@ namespace HydroDesktop.Plugins.MainPlugin
             Map mainMap = _app.Map as Map;
             if (mainMap != null)
             {
+                this.Cursor = Cursors.WaitCursor;
                 if (lstProjectTemplates.SelectedIndex < 0)
                 {
                     MessageBox.Show("Please select a project.");
@@ -150,8 +151,8 @@ namespace HydroDesktop.Plugins.MainPlugin
                 _newProjectCreated = true;
 
                 this.DialogResult = DialogResult.OK;
-                    
-               
+
+                this.Cursor = Cursors.Default;
                 this.Close();
             }
         }
@@ -188,9 +189,11 @@ namespace HydroDesktop.Plugins.MainPlugin
         /// </summary>
         private void CreateEmptyProject()
         {
+            this.Cursor = Cursors.WaitCursor;
             panelStatus.Visible = true;
             myProjectManager.CreateEmptyProject();
             _newProjectCreated = true;
+            this.Cursor = Cursors.Default;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
