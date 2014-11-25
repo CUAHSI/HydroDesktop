@@ -10,8 +10,8 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop 1.7.3"
-#define SrcApp "HydroDesktop_1_7_3.exe"
+#define AppName "HydroDesktop 1.7.2"
+#define SrcApp "HydroDesktop_1_7_2.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
@@ -37,7 +37,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppID={{52A4C3C0-3B01-4455-B3DF-CE7BCADCB714}
+AppID={{DED92382-70DE-4917-9956-431324047ABD}
 
 PrivilegesRequired=poweruser
 MinVersion=,5.01
@@ -95,29 +95,29 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\Binaries\HydroDesktop.*.dll"; DestDir: "{app}"; Permissions: everyone-full; Flags: ignoreversion;
-Source: "..\Binaries\DotSpatial.*.dll"; DestDir: "{app}"; Permissions: everyone-full; Flags: ignoreversion;
-Source: "..\Binaries\Microsoft.*.dll"; DestDir: "{app}"; Permissions: everyone-full; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\DotSpatial.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\Microsoft.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
-Source: "..\Documentation\HydroDesktop_Quick_Start_Guide_1.5.pdf"; DestDir: "{app}\Help\html"; Permissions: everyone-full; Flags: ignoreversion;
-Source: "..\Documentation\HydroDesktop User Guide.pdf"; DestDir: "{app}\Help\html"; Permissions: everyone-full; Flags: ignoreversion;
+Source: "..\Documentation\HydroDesktop_Quick_Start_Guide_1.5.pdf"; DestDir: "{app}\Help\html"; Flags: ignoreversion;
+Source: "..\Documentation\HydroDesktop User Guide.pdf"; DestDir: "{app}\Help\html"; Flags: ignoreversion;
 
-Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Permissions: everyone-full; Flags: ignoreversion;
-Source: "..\Binaries\x86\SQLite.Interop.dll"; DestDir: "{app}\x86"; Permissions: everyone-full; Flags: ignoreversion;
-Source: "..\Binaries\x64\SQLite.Interop.dll"; DestDir: "{app}\x64"; Permissions: everyone-full; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Permissions: everyone-full; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_6_dev.exe"; DestDir: "{app}"; DestName: "{#SrcApp}"; Permissions: everyone-full; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_6_dev.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Permissions: everyone-full; Flags: ignoreversion;
+Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\x86\SQLite.Interop.dll"; DestDir: "{app}\x86"; Flags: ignoreversion;
+Source: "..\Binaries\x64\SQLite.Interop.dll"; DestDir: "{app}\x64"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_6_dev.exe"; DestDir: "{app}"; DestName: "{#SrcApp}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_6_dev.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
 
 ;Plugins
-Source: "..\Binaries\Plugins\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages"; Permissions: everyone-full; Flags: recursesubdirs ignoreversion;
-Source: "..\Source\packages\DotSpatial.Plugins.ExtensionManager.1.1.3\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.ExtensionManager.1.1.3"; Permissions: everyone-full; Flags: recursesubdirs ignoreversion;
-Source: "..\Source\packages\DotSpatial.Plugins.MenuBar.1.0.1200\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.MenuBar.1.0.1200"; Permissions: everyone-full; Flags: recursesubdirs ignoreversion;
-Source: "..\Source\packages\DotSpatial.Plugins.Ribbon.1.4.38\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.Ribbon.1.4.38"; Permissions: everyone-full; Flags: recursesubdirs ignoreversion;
-Source: "..\Source\packages\DotSpatial.Plugins.WebMap.1.1.0.0\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.WebMap.1.1.0.0"; Permissions: everyone-full; Flags: recursesubdirs ignoreversion;
+Source: "..\Binaries\Plugins\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages"; Flags: recursesubdirs ignoreversion;
+Source: "..\Source\packages\DotSpatial.Plugins.ExtensionManager.1.1.1\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.ExtensionManager.1.1.1"; Flags: recursesubdirs ignoreversion;
+Source: "..\Source\packages\DotSpatial.Plugins.MenuBar.1.0.1200\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.MenuBar.1.0.1200"; Flags: recursesubdirs ignoreversion;
+Source: "..\Source\packages\DotSpatial.Plugins.Ribbon.1.4.38\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.Ribbon.1.4.38"; Flags: recursesubdirs ignoreversion;
+Source: "..\Source\packages\DotSpatial.Plugins.WebMap.1.1.0.0\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.WebMap.1.1.0.0"; Flags: recursesubdirs ignoreversion;
 
 ;Windows Specific Folders
-Source: "..\Binaries\Support\Windows\*"; DestDir: "{app}\Support\Windows\"; Permissions: everyone-full; Flags: ignoreversion;
+Source: "..\Binaries\Support\Windows\*"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#SrcApp}"
