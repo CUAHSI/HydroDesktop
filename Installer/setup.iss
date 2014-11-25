@@ -10,8 +10,8 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop 1.7.2"
-#define SrcApp "HydroDesktop_1_7_2.exe"
+#define AppName "HydroDesktop 1.7.3"
+#define SrcApp "HydroDesktop_1_7_3.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
 #define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
@@ -37,7 +37,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppID={{DED92382-70DE-4917-9956-431324047ABD}
+AppID={{52A4C3C0-3B01-4455-B3DF-CE7BCADCB714}
 
 PrivilegesRequired=poweruser
 MinVersion=,5.01
@@ -111,7 +111,7 @@ Source: "..\Binaries\HydroDesktop_1_6_dev.exe.config"; DestDir: "{app}"; DestNam
 
 ;Plugins
 Source: "..\Binaries\Plugins\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages"; Flags: recursesubdirs ignoreversion;
-Source: "..\Source\packages\DotSpatial.Plugins.ExtensionManager.1.1.1\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.ExtensionManager.1.1.1"; Flags: recursesubdirs ignoreversion;
+Source: "..\Source\packages\DotSpatial.Plugins.ExtensionManager.1.1.4\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.ExtensionManager.1.1.4"; Flags: recursesubdirs ignoreversion;
 Source: "..\Source\packages\DotSpatial.Plugins.MenuBar.1.0.1200\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.MenuBar.1.0.1200"; Flags: recursesubdirs ignoreversion;
 Source: "..\Source\packages\DotSpatial.Plugins.Ribbon.1.4.38\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.Ribbon.1.4.38"; Flags: recursesubdirs ignoreversion;
 Source: "..\Source\packages\DotSpatial.Plugins.WebMap.1.1.0.0\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.WebMap.1.1.0.0"; Flags: recursesubdirs ignoreversion;
@@ -151,6 +151,7 @@ Type: filesandordirs; Name: "{commonappdata}\{#SrcApp}"
 [Dirs]
 Name: {app}; Permissions: everyone-modify; Flags: uninsalwaysuninstall
 Name: {app}\Maps; Permissions: everyone-modify; Flags: uninsalwaysuninstall
+Name: {commonappdata}\{#SrcApp}; Permissions: everyone-full; Flags: uninsalwaysuninstall
 ; not yet capable of moving stuff outside of the HD folder reliably
 ;Name: {userdocs}\HydroDesktop\default; Permissions: everyone-modify
 
