@@ -92,6 +92,7 @@
     </Reference>
     <Reference Include="DotSpatial.Plugins.ExtensionManager">
       <HintPath>..\..\packages\DotSpatial.Plugins.ExtensionManager.1.1.4\lib\net40-Client\DotSpatial.Plugins.ExtensionManager.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DotSpatial.Projections">
       <HintPath>..\..\packages\DotSpatial.Projections.1.6.1\lib\net40-Client\DotSpatial.Projections.dll</HintPath>
