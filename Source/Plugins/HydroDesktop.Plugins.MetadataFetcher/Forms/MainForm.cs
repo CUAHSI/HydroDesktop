@@ -379,9 +379,15 @@ namespace HydroDesktop.Plugins.MetadataFetcher.Forms
 				double south = 90;
                 int valueCount = 0;
 
-             
-                IList<Site> siteList1 = (siteList as List<Site>).GetRange(0, (siteList.Count/2)-1);
-                IList<Site> siteList2 = (siteList as List<Site>).GetRange(siteList.Count/2, siteList.Count-1);
+				IList<Site> siteList1, siteList2;
+				if (siteList.Count % 2 == 0) {
+					siteList1 = (siteList as List<Site>).GetRange(0, siteList.Count / 2);
+					siteList2 = (siteList as List<Site>).GetRange(siteList.Count / 2, siteList.Count / 2);
+				}
+				else {
+					siteList1 = (siteList as List<Site>).GetRange(0, (siteList.Count / 2) + 1);
+					siteList2 = (siteList as List<Site>).GetRange((siteList.Count / 2) + 1, siteList.Count / 2);
+				}
 
                 var thread1 = new Thread(() => ProcessSites(siteList1));
                     thread1.Start();

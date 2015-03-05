@@ -12,7 +12,7 @@
       <Value Profile="(Default)">http://hydrodesktop.codeplex.com/workitem/list/basic</Value>
     </Setting>
     <Setting Name="hisCommentUri" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://contact.hydrodesktop.org</Value>
+      <Value Profile="(Default)">https://www.cuahsi.org/Contact</Value>
     </Setting>
     <Setting Name="commentMailtoLink" Type="System.String" Scope="User">
       <Value Profile="(Default)">mailto:questions@cuahsi.org?subject=HydroDesktop&amp;body=Dear CUAHSI User Support Specialist,%0A%0A</Value>

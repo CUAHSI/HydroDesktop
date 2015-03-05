@@ -61,7 +61,7 @@ namespace HydroDesktop.Plugins.HelpTab.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://contact.hydrodesktop.org")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.cuahsi.org/Contact")]
         public string hisCommentUri {
             get {
                 return ((string)(this["hisCommentUri"]));
