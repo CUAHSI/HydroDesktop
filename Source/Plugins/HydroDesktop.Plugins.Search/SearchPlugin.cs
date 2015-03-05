@@ -174,7 +174,7 @@ namespace HydroDesktop.Plugins.Search
             rbServices.GroupCaption = grpDataSources;
             rbServices.RootKey = _searchKey;
             head.Add(rbServices);
-            head.Add(new SimpleActionItem(_searchKey, Msg.Add_Sites, addDataSites_Click) { GroupCaption = grpDataSources, LargeImage = Resources.data_sites, ToolTipText = Msg.Run_Search_Tooltip, });
+            head.Add(new SimpleActionItem(_searchKey, Msg.Add_Sites, addDataSites_Click) { GroupCaption = grpDataSources, LargeImage = Resources.data_sites, ToolTipText = Msg.Add_Sites, });
             #endregion
 
             head.Add(new SimpleActionItem(_searchKey, Msg.Search, rbSearch_Click) { GroupCaption = Msg.Search, LargeImage = Resources.search_32, SmallImage = Resources.search_16, ToolTipText = Msg.Run_Search_Tooltip, });
@@ -395,8 +395,8 @@ namespace HydroDesktop.Plugins.Search
         void _searcher_Completed(object sender, CompletedEventArgs e)
         {
           
-            rbSelect_Click(this, new EventArgs());
-            rbSelect.Toggle();
+            //rbSelect_Click(this, new EventArgs());
+            //rbSelect.Toggle();
 
             if (e.Result == null) return;
             e.ProgressHandler.ReportMessage("Adding Sites to Map...");

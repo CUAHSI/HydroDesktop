@@ -330,6 +330,9 @@ Namespace Controls
             With zgTimeSeries.GraphPane
 
                 For i As Integer = 0 To .CurveList.Count - 1
+                    If .CurveList(i).Link.Title.Contains("elsius") Then
+                        .CurveList(i).Link.Title = "Temperature - degree celsius"
+                    End If
                     If Not AsixsList.Contains(.CurveList(i).Link.Title) Then
                         AsixsList.Add(.CurveList(i).Link.Title)
                     End If
