@@ -1,0 +1,63 @@
+<div class="wikidoc">
+<p><a href="/wikipage?title=Presentations%20and%20Publications&referringTitle=Getting%20HydroDesktop">Presentations and Publications</a>,
+<a href="/wikipage?title=Functional%20Specifications&referringTitle=Getting%20HydroDesktop">
+Functional Specifications</a>, <a href="/wikipage?title=Database%20Structure&referringTitle=Getting%20HydroDesktop">
+Database Structure</a>, <a href="/wikipage?title=Workshops%20and%20Training&referringTitle=Getting%20HydroDesktop">
+Workshops and Training</a></p>
+<hr>
+<h1>Getting HydroDesktop</h1>
+<p>This page gives instructions on how to access the HydroDesktop application and source code.</p>
+<h2>Downloading the Installer</h2>
+<p>The installer is currently provided for the Windows operating system. The installer contains the latest stable release of HydroDesktop including sample map data on the Downloads page. Experimental releases are available for registered users in the Other
+ downloads group.</p>
+<h2>Downloading Code as a Zip File</h2>
+<p>CodePlex provides a link to download the entire source code library. This is done by clicking the &quot;Source Code&quot; tab above, and then on the right hand side, you will see a box that says &quot;Latest Version&quot;. In that box is a link that says &quot;Download&quot;. Click that
+ link. This will initiate a full download of the entire HydroDesktop Subversion Code Repository (after you agree to the HydroDesktop open source license). Alternatively, you can click on the &quot;Browse&quot; link in that same &quot;Latest Version&quot; box. This will take you
+ to a file and code browser for the full repository. That page shows a list of files and folders on the lefthand side and includes another &quot;Download&quot; link that will also initiate a full download of a zip file of the full repositorCodePlex provides a link to
+ download the entire source code library.</p>
+<h2>Downloading Code Using TortoiseHG Mercurial Client</h2>
+<p>A better way to get the application is to use a subversion client tool. I recommend the program, TortoiseHG, which I believe is being used by most everyone on this project. You can download Tortoise HG from the following site:
+<a href="http://tortoisehg.bitbucket.org/A better way to get the application is to use a subversion client tool. I recommend the program, TortoiseHG, which I believe is being used by most everyone on this project. You can download Tortoise HG from the following site: [url:http://tortoisehg.bitbucket.org/">
+http://tortoisehg.bitbucket.org/</a><br>
+<br>
+Steps to use TortoiseHG to get HydroDesktop includSteps to use TortoiseHG to get HydroDesktop are:</p>
+<ol>
+<li>Download the software from <a href="http://tortoisehg.bitbucket.org/">http://tortoisehg.bitbucket.org/</a>
+</li><li>Install it on your computer (may require a reboot) </li><li>Open a file browser and navigate to the location where you want to place your HydroDesktop files&nbsp;
+</li><li>Right click in that folder and from the context menu that opens select &quot;Tortoise HG - Clone# Right click in that folder and from the context menu that opens select &quot;Tortoise HG - Clone&quot;
+</li><li>A dialog box will open. In that dialog box enter the following for &quot;Source path&quot;:
+<a href="https://hg01.codeplex.com/hydrodeskto# A dialog box will open. In that dialog box enter the following for &quot;Source path&quot;: [url:https://hg01.codeplex.com/hydrodesktop">
+https://hg01.codeplex.com/hydrodesktop</a> </li><li>In &quot;Destination Path&quot;, enter an appropriate local file path where you want to place the files (for example: &quot;c:\dev\hydrodesktop
+</li><li>In Options, check the &quot;Use uncompressed transfer&quot; checkbox. </li><li>Click Clone. This will initiate a download of the full repository directly to the specified folder, and it will be &quot;set up&quot; for running from that location.
+</li><li>Right-click on your HydroDesktop folder in Windows Explorer and choose TortoiseHG - Update. This will make the code up to date with most recent changes on codeplex.
+</li></ol>
+<p><br>
+Read the <a href="https://www.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=238329">
+Detailed Tutorial</a> for using TortoiseHG with HydroDesktop<br>
+<br>
+<img title="hg_clone.png" src="http://i3.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=238328" alt="hg_clone.png"></p>
+<h2>Building HydroDesktop from the Source Code Repository</h2>
+<p><a title="Build HydroDesktop from Source (docx)" href="http://download-codeplex.sec.s-msft.com/Download?ProjectName=hydrodesktop&DownloadId=699619">Tutorial: Build HydroDesktop from Source Code</a> (<a title=".pdf" href="http://download-codeplex.sec.s-msft.com/Download?ProjectName=hydrodesktop&DownloadId=699622">.pdf</a>
+<a href="http://download-codeplex.sec.s-msft.com/Download?ProjectName=hydrodesktop&DownloadId=699619">
+.docx</a>)</p>
+<p>First, install IronPython, or some other library with Microsoft.Scripting.Hosting.</p>
+<p>Once the zip file download or the TortoiseHG Clone completes, or if you download the source code file and unzip it to your folder, then you can navigate to the folder where you placed the files, and open the Visual Studio 2010 solution files to work on the
+ source code and execute the application from within Visual Studio. There is one solution file:</p>
+<ul>
+<li>Source\HydroDesktop.sln (includes the main application, all extensions and unit tests)
+</li></ul>
+<p>To build the code, open HydroDesktop.sln in Visual Studio 2010 or Visual Studio 2012. The output is built to the &quot;Binaries&quot; folder. A file HydroDesktop_1_6_dev.exe will be created. This is the main executable.<br>
+<br>
+<strong>Important notice</strong>: When HydroDesktop builds, It uses <a href="http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c">
+nuget package manager</a> to obtain the latest packages of the DotSpatial GIS libraries and of some extensions. Install
+<a href="http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c">
+nuget package manager</a> Visual Studio extension before building HydroDesktop. The nuget package manager runs as an automated pre-build step.&nbsp;
+<strong>Troubleshooting:</strong> Some users have reported that this pre-build step fails if there are spaces in the source code folder path. Therefore it is recommended to have the source code in a folder without any spaces.</p>
+<h2>Committing Your Changes to the Repository</h2>
+<p>If you make any changes to the source code and you want to commit those to the repository (assuming you have developer privileges for this project), then simply right click in the folder where you have your HydroDesktop files, and click &quot;HG Commit&quot;. Once
+ the HG Commit is finished, right click in the folder where you have your HydroDesktop files and select &quot;Tortoise HG - Synchronize&quot;. In the dialog that opens select &quot;Pull&quot;. This will transfer your changes to the online Mercurial source code repository. Note
+ that this only works if you used TortoiseHG to download the code in the first place. PLEASE Comment your commits. It is critical to project management that every code change is commented in the TortoiseHG commit window. It can be a brief comment &quot;Changed appearance
+ of X&quot; or &quot;Changed behavior of Y&quot; but it just needs to be there.<br>
+<br>
+If you do not have privileges to commit code to this project and would like to be given privileges, please register with CodePlex and then send your user name to the project manager (user: danames).</p>
+</div><div class="ClearBoth"></div>

@@ -1,0 +1,390 @@
+<div class="wikidoc">
+<p><strong><span style="font-size:large">Testing Procedures for HydroDesktop</span></strong></p>
+<p>Before approving a release as a 'Recommended release', following integration testing procedures must pass. This is a &quot;base line&quot; set of tests to act as a &quot;sanity check&quot; to make sure the basic&nbsp;functions&nbsp;are working in HydroDesktop.&nbsp;</p>
+<p><strong>&nbsp;General Guidelines</strong></p>
+<p>Run the testing procedures as a regular, non-privileged user (log-in as admin, install HydroDesktop, log-out, log-in as a regular user, start HydroDesktop.</p>
+<p>To test correct processing of dates, times and numbers, it is recommended to also run the testing procedure with foreign language regional language settings (To change the settings in Windows, go to Control Panel - Language and Region - and change the language
+ to Czech (Czech Republic) or to your favorite foreign language.</p>
+<hr>
+<p><strong>Sample Files for Testing</strong></p>
+<p>Use the following shapefiles, project files and databases for the testing:</p>
+<p><strong>Jacobs_Well_Spring</strong>&nbsp; (Jacob's Well Spring project&nbsp; - includes water temperature, discharge and precipitation data from the Blanco river watershed in Texas used in the HydroDesktop tutorial. This project comes pre-installed with
+ HydroDesktop 1.4. When you start HydroDesktop, select <strong>Open Existing Project - Jacobs_Well_Spring</strong>.</p>
+<p><strong>elbe</strong> (Labe/Elbe river watershed - includes river catchments and administrative regions of the Czech Republic. This project comes pre-installed with HydroDesktop 1.4. When you start HydroDesktop, select
+<strong>Open Existing Project - elbe</strong>.</p>
+<p><strong><a href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=345719">Dry_Creek.zip</a>
+</strong>(Dry Creek experimental watershed, Idaho)</p>
+<p><strong><a href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=314757">Czechia.zip</a>
+</strong>(Czechia HydroDeskop project - includes admin regions, rivers, and time series data from Central Europe)<strong>&nbsp;</strong></p>
+<p><strong><a href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=284739">MEX_wat.zip</a>
+</strong>(Mexico rivers)</p>
+<hr>
+<p><strong>Map Functions</strong></p>
+<p>&nbsp;<em>Procedures by Jiri Kadlec, 9/22/2011</em></p>
+<p>&nbsp;Limitations:Only adding shapefiles in UTM&nbsp; and WGS 1984 projections&nbsp; is fully supported. Some other projections are not supported.</p>
+<p>Testing Procedure 1 - Add external shapefiles&nbsp;<em>&nbsp;</em></p>
+<ol>
+<li>Start HydroDesktop with the &quot;North America&quot; option. </li><li>Unzip the attached file file: <a title="MEX_wat.zip" href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=284739">
+MEX_wat.zip</a> </li><li>Click the 'Add Layer' button. </li><li>Select the file 'MEX_water_lines_dcw.shp'. </li><li>A message is shown: Reproject map layer to match the map coordinate system? This will not affect the source file. Select Yes.
+</li><li>The Mexico rivers are added to the map. </li><li>In 'Online Basemap' select 'Bing aerial map'. and select 'opacity = 60' </li><li>Zoom to the estuary of Colorado in Gulf of California </li><li>The dry channel of the Colorado visible on the satellite image is well aligned with the stream line shapefile layer.
+</li></ol>
+<p>Testing Procedure 2 - View attribute table <em>(continue from 'Map Functions testing procedure 1 Add external shapefiles)</em></p>
+<ol>
+<li>Right click on MEX_water_lines_dcw </li><li>Choose 'Attribute Table Editor' </li><li>In the menu choose Selection - Query </li><li>Double click on Field name HYC_DESCRI </li><li>Click the '=' button </li><li>Click 'Get Unique Values' </li><li>Double click 'Perennial/Permanent' </li><li>Click OK </li><li>The table shows 6199 rows selected </li><li>Close the attribute table. the perenninal rivers of Mexico are also highlighted on the map.
+</li></ol>
+<hr>
+<p><strong>Data Discovery (Search and Download)</strong></p>
+<p><em><em>Procedure by Jiri Kadlec, 9/20/2011 (updated by YooriChoi, 10/6/2011, updated by Jiri Kadlec 1/24/2012)<br>
+</em></em></p>
+<p>Limitations:</p>
+<p>Internet access is required. Doesn't work with very large search area. Search speed is very slow when selecting more than 5 polygons. Application becomes unresponsive when more than 100,000 series are found.</p>
+<p>Main testing procedure: use with your own area of interest and keyword of interest:</p>
+<p>&nbsp;</p>
+<p>Testing procedure 1</p>
+<ol>
+<li>Start HydroDesktop with 'North America' Project template </li><li>Click the Search tab </li><li>In the Area panel, Click Select by Attribute </li><li>Select active layer - U.S counties </li><li>Select county - Ada, ID by typing &quot;ada&quot; in the value box and clicking Enter. </li><li>Click OK - the map will zoom to Ada county </li><li>Select Keyword - streamflow by typing in the Keyword box </li><li>In Dates, set Start Date: 10/1/2005 and End Date: 9/31/2010 </li><li>Click 'Run Search' button </li><li>The map shows 4 layers in the data sites group: EPA STORET, NWIS Daily Values, NWIS Instaneous Irregular Data, Dry Creek Experimental Watershed
+</li><li>Right-click on the layer &quot;Dry Creek Experimental Watershed&quot;in the legend </li><li>In the context menu of the &quot;Dry Creek Experimental Watershed&quot; choose Selection - Select All.
+</li><li>In the Search tab click &quot;Download&quot; </li><li>Wait until the Download Manager shows 'Download Complete'. and close the Information message box and the Download Manager.
+</li><li>Go to the 'Table' tab. Notice that eight series are shown in the list of time series (6 series from DCEW_Lower Gage, 1 from DCEW_Con2E Gage, 1 from DCEW_Con2M Gage)
+</li><li>Select the 'Table' tab and check the first two series </li><li>Select Graph tab - the two series should appear in the graph </li><li>Select Edit - the two series should appear in the edit view graph </li></ol>
+<p><strong>&nbsp;</strong>Testing procedure 2</p>
+<ol>
+<li>Start HydroDesktop with the North America project template. </li><li>In the map legend, choose U.S.&nbsp; Counties and check the checkbox next to it. The counties layer becomes visible.
+</li><li>In the search tab choose &quot;Select by attribute&quot; </li><li>in the value box, start typing Hays, TX. Click Hays, TX to select it. </li><li>Click Apply. The map zooms to the county&nbsp; and highlights it in blue. </li><li>Click OK. </li><li>Specify a Start Date of 10/1/2009 and an End date of 9/30/2010 </li><li>In the keyword box start typing &quot;streamflow&quot; in the Keywords text box. The list of keywords automatically selects keywords that match your search. Click Streamflow in the list of keywords.
+</li><li>Click the &quot;Keyword Selection&quot; button . This opens the detailed keywords dialog.
+</li><li>Click the Add button to add &quot;Discharge, Stream&quot; into the selected keywords. </li><li>In the Keywords text box, start typing &quot;temperature&quot;. </li><li>Click Temperature, water in the list of keywords. It should also show in the tree view.
+</li><li>In the bottom part of the keywords window, click the Add button to add &quot;Temperature, water&quot; into the Selected Keywords box.
+</li><li>Click OK to close the keywords window. </li><li>In the search tab, click Run Search </li><li>In the Map legend on the left, right-click on the <em>NWIS Daily Values</em> layer and click
+<em>Attribute table editor</em>. </li><li>Expand the SiteName, VarName and DataType columns in the attritute table. </li><li>Sort the table by SiteName by clicking on the SiteName column. </li><li>With the CTRL button pressed, Select the following time series in the attribute table window:
+</li></ol>
+<table border="0">
+<caption>Table 1 Selected Time Series in Attribute Table Editor</caption>
+<tbody>
+<tr>
+<td><strong>SiteName</strong></td>
+<td><strong>VarName</strong></td>
+<td><strong>DataType</strong></td>
+</tr>
+<tr>
+<td>Blanco Rv nr Kyle, , TX</td>
+<td>Discharge, cubic feet per second</td>
+<td>Average</td>
+</tr>
+<tr>
+<td>Jacobs Well Spg nr Wimberley, TX</td>
+<td>Discharge, cubic feet per second</td>
+<td>Average</td>
+</tr>
+<tr>
+<td>Jacobs Well Spg nr Wimberley, TX</td>
+<td>Temperature, water, degrees Celsius</td>
+<td>Average</td>
+</tr>
+<tr>
+<td>Blanco at Halifax Rch nr Kyle, TX<br>
+</td>
+<td>Temperature, water, degrees Celsius</td>
+<td>Average</td>
+</tr>
+</tbody>
+</table>
+<p>Click Close to close the attribute table editor. Notice that the selected time series are highlighted in the map.</p>
+<p>Testing procedure 3 - Data Download (<em>continued from testing procedure 2</em>)</p>
+<ol>
+<li>In the <em>Search</em> tab, Click <strong>Download</strong>. </li><li>Dismiss the message box and hide the download manager when it is finished. </li><li>Once the download is complete, the sites with downloaded data are highlighted in green color.
+</li><li>Click the Graph tab in the ribbon to activate it. </li><li>Click to place a check next to Temperature at the Blanco River at Halifax Ranch.
+</li><li>Place a check next to Temperature at Jacob&rsquo;s Well Spring. </li><li>Two water temperature series are visible in the graph. </li></ol>
+<p>&nbsp;</p>
+<hr>
+<p>&nbsp;</p>
+<p><strong>Data Export</strong></p>
+<p><em>Procedure by Yoori Choi, 9/22/2011 (updated by Jiri kadlec, 10/2/2011)</em></p>
+<p>HydroDesktop Project/Data to use for this test:</p>
+<p><strong>&nbsp;</strong><a title="Springs.zip" href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=284943"><strong>&nbsp;</strong></a><strong><a title="Jacobs_Well_Spring.zip" href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=310098">Jacobs_Well_Spring.zip</a></strong><strong>
+</strong><em>(zip file contains the project file, database and all required files). You can use the sample Jacobs_Well_Spring project that comes with HydroDesktop instead.<br>
+</em></p>
+<ul>
+</ul>
+<p>Testing procedure 1<em>&nbsp;</em></p>
+<ol>
+<li>Start HydroDesktop </li><li>Select Open Existing Project - Browse - and select the project jacobs_well_spring.dspx
+</li><li>Ensure Table plugin is activated&nbsp; </li><li>Click Export button </li><li>Specify the data sites layer you want to export (NWIS Daily Values) </li><li>Select all felds to export </li><li>Select a delimiter. (e.g. Comma) </li><li>Click Browse button to specify output file in your computer. (file name = 'Hays County export data')
+</li><li>Click &quot;Export Data&quot; button </li><li>Close the window. </li></ol>
+<p>Output</p>
+<p>The output of this function should be:&nbsp;</p>
+<p>Your exported 'Hays County Streamflow export data' csv file is located in your computer.&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<hr>
+<p><strong>Table View</strong></p>
+<p><em>Procedure by Yoori Choi, 9/22/2011 </em><em>(updated by Jiri kadlec, 10/2/2011)</em></p>
+<p>HydroDesktop Project/Data to use for this test:</p>
+<p><strong>&nbsp;</strong><strong><a title="Jacobs_Well_Spring.zip" href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=310098">Jacobs_Well_Spring.zip</a></strong><strong>
+</strong><em>(zip file contains the project file, database and all required files)</em><em> You can use the sample Jacobs_Well_Spring project that comes with HydroDesktop instead.</em></p>
+<p>Limitations: Display of table is slow for series with &gt; 100,000 data values</p>
+<p>Testing procedure 1<em>&nbsp;</em></p>
+<ol>
+<li>Select the 'Table' tab and check the two water temperature series. (&quot;Blanco Rv at Halifax Rch nr Kyle, TX&quot; &amp; &quot;Jacobs Well Spg nr Wimberley, TX&quot;)
+</li><li>The result is shown on the tabular form. As a default, series are shown all fields in sequence.
+</li><li>Click a radio button next to the &quot;Show just values in parallel&quot;, then the result will be shown just values in parallel.&nbsp;
+</li></ol>
+<p>Output</p>
+<p>The output of this function should be:</p>
+<p>About 19894 data values will be shown in a tabular form.</p>
+<p><strong>&nbsp;</strong></p>
+<hr>
+<p><strong>Graph View</strong></p>
+<p><em>Procedure by Yoori Choi, 10/4/2011</em></p>
+<p>Limitations: Display of graph is slow if more than 20 series are selected or if a time series has &gt; 100,000 data values.</p>
+<p>Testing procedure 1&nbsp;<em>(continue from 'Table View' testing procedure 1)</em></p>
+<ol>
+<li>Select the 'Graph' tab and check the first two water temperature series. (&quot;Blanco Rv at Halifax Rch nr Kyle, TX&quot; &amp; &quot;Jacobs Well Spg nr Wimberley, TX&quot;)
+</li><li>You will notice that the Graph View creates a time series plot of the selected series and can visualize multiple series at once. You will notice that a legend appears at the bottom of the plot when 2 series are selected.
+</li><li>Select the type of plot to be displayed by clicking on the appropriate icon.
+<ul>
+<li>Click on 'Probability' plot type. It will show the line, the data points, or both.
+</li><li>Click on 'Histogram' plot type.&nbsp; </li><li>Click on 'Box/Whisker' plot type. </li><li>Click on 'Summary' icon and summary statistics for the currently selected time series will be displayed.
+</li></ul>
+</li><li>Select a 'Time series' plot type to go back to the original. </li><li>Click and drag rectangle on the plot to define a zoom area. You will notice that when you hover over the plot the cursor changes to a cross, enabling you to select a zoom area.
+</li><li>While you are zoomed in, you will notice that scroll bars appear at the bottom and on the right of the plot window. You can zoom in on a time series plot and then scroll through time using the scroll bars.
+</li><li>To zoom out, you can right click on the plot and select &quot;Un-zoom&quot;, &quot;Undo All Zoom/pan&quot;, or &quot;Set Scale to Default&quot;.
+</li><li>Change start date as &quot;1/1/2010&quot; in the &quot;Date Time&quot; panel and then click the Refresh button.
+</li><li>You will notice that the plot has been restricted to the selected date range.
+</li><li>Click the &quot;Full Date Range&quot; option then it will reset the plot to the full date range.
+</li><li>To save a copy of the image to disk, right click on the plot window and select &quot;Save Image As&quot;. A file dialog will open asking you where you want to store the image. Select a location to which you want to save the image, select a desired file type, give
+ your image name, and then click the &quot;Save&quot; button to save it to disk. </li></ol>
+<p><em><br>
+</em></p>
+<hr>
+<p>&nbsp;</p>
+<p><strong>Edit View</strong></p>
+<p><em>Procedure by Yoori Choi, 10/4/2011 (Updated by Jiri Kadlec, 2/21/2012)<br>
+</em></p>
+<p>HydroDesktop Project/Data to use for this test:</p>
+<p><strong>&nbsp;</strong><strong><a href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=345719">Dry_Creek.zip</a>
+</strong><strong>&nbsp;</strong><em>(zip file contains the project file, database and all required files)
+</em><em>You can also use the sample Jacobs_Well_Spring project that comes with HydroDesktop instead.</em></p>
+<p>Limitations: Saving of values is slow for very large series (with &gt; 100,000 data values)</p>
+<p><strong><em>Edit View - Testing procedure 1</em></strong></p>
+<ol>
+<li>Open the project <strong>Dry_Creek.dspx </strong></li><li>Ensure Edit plugin is activated&nbsp; </li><li>Select a data series in the Series Selection tool&nbsp; </li><li>Click &quot;Edit Series&quot; button&nbsp; </li><li>Type a value (e.g. Value &gt; 15) value into one of the threshold value boxes and then click the &quot;Apply Filter&quot; button
+</li></ol>
+<p>Output</p>
+<p>The output of this function should be:</p>
+<p>Any value greater than '15' will be marked as a red dot on the graph.</p>
+<p>&nbsp;</p>
+<p><strong><em>Edit View - Testing procedure 2</em></strong></p>
+<ol>
+<li>Ensure Edit plugin is activated&nbsp; </li><li>Select a data series in the Series Selection tool&nbsp; </li><li>Click &quot;Edit Series&quot; button&nbsp; </li><li>Use the data filters or click on records in the Edit View table to select the data values that you would like to modify
+</li><li>Click the &quot;Change Value&quot; button </li><li>Select the operation that you would like to perform (e.g. add, subtract, multiply, or set value to)
+</li><li>Type a numeric value into the text box. (e.g. Subtract: 10) </li></ol>
+<p>Output</p>
+<p>The output of this function should be:</p>
+<p>The original data value will be subtracted by 10 and updated with a new value.</p>
+<p><strong><em>Edit View - Testing Procedure 3</em></strong></p>
+<ol>
+<li>Ensure Edit plugin is activated&nbsp; </li><li>Select a Discharge data series in the Series Selection tool&nbsp; </li><li>Click &quot;Edit Series&quot; button&nbsp; </li><li>Select one or more rows in the table below the graph in the edit view </li><li>Click &quot;Flag&quot; button </li><li>in the dialog, select set qualifier to : New Qualifier... and enter qualifier code: &quot;MyCode&quot;
+</li><li>in the dialog box, click &quot;Set&quot; </li></ol>
+<p>Output</p>
+<p>The output of this function should be:</p>
+<p>The QualifierCode is set to &quot;MyCode&quot; in all selected rows</p>
+<ol>
+</ol>
+<p><strong>&nbsp;</strong></p>
+<p><strong><em>Edit View - Testing procedure 4</em></strong></p>
+<ol>
+<li>Ensure that the Edit plugin is activated </li><li>Select a data series in the series selection tool </li><li>Click &quot;Derive Series&quot; </li><li>Select &quot;Derive using aggregated data values&quot; </li><li>Select the time interval (for example Daily) and the aggregation (for example Average)
+</li><li>Click &quot;New Data Series&quot;. </li></ol>
+<p>Output</p>
+<p>The output should be: A new derived series in the graph view and table view with aggregated values. Notice that some of the values re negative (&quot;no data values&quot;)</p>
+<p>&nbsp;</p>
+<hr>
+<p><strong>HydroR</strong></p>
+<p>&nbsp;<em>Procedure by Yoori Choi, 9/6/2011</em></p>
+<p><em>(USU)</em></p>
+<p>HydroDesktop Project/Data to use for this test:</p>
+<p><strong>&nbsp;</strong><strong><a title="Jacobs_Well_Spring.zip" href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=310098">Jacobs_Well_Spring.zip</a></strong><strong>
+</strong><em>(zip file contains the project file, database and all required files)
+</em><em>You can use the sample Jacobs_Well_Spring project that comes with HydroDesktop instead.</em></p>
+<ul>
+</ul>
+<p>Testing procedure 1</p>
+<ol>
+<li>Prerequisite: install R program from http://www.r-project.org/&nbsp; </li><li>Ensure plugin is activated&nbsp; </li><li>Click Start R. </li><li>If a message 'Select R location' appears, click browse... and browse to the folder C:\Program Files\R\R-2.14.1\bin\i386 or the folder where R is installed and select R.exe
+</li><li>Select any of data series shown in the HydroDesktop Series Selection tool </li><li>Click &quot;Generate R code&quot; </li><li>Type the following command:&nbsp; plotDataSeries(data0, &quot;DataValues&quot;)&nbsp;&nbsp;&nbsp; in the R-code window.
+</li><li>Highlight a generated R code from a previous step then execute &quot;Send Selection&quot;
+</li><li>The data series is shown in the R-graphics plot. </li><li>Save R scripts as &quot;hydroRresult.r&quot; </li><li>Click &quot;Close R&quot; button to close HydroR plugin. </li><li>Close HydroDesktop </li><li>Re-open HydroDesktop (select open existing project - Dry_Creek.dspx) </li><li>Enable HydroR plugin then open a saved R script &quot;hydroRresults.r&quot;. </li><li>Click Start R. </li><li>Click Send All. </li></ol>
+<p>Output</p>
+<p>The output of this function should be:</p>
+<p>a window showing the R time-series plot</p>
+<p><strong>...</strong></p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>&nbsp;</strong></p>
+<hr>
+<p><strong>HydroModeler</strong></p>
+<p><em>Procedure by Yoori Choi, 9/6/2011</em></p>
+<p>(Jon Goodall)</p>
+<p><em>(Data for this test are included with the installer.)</em></p>
+<p>1. Go to HydroDesktop Help - Extensions - HydroModeler<em><br>
+</em></p>
+<p><em>2. Open an existing model and accessing the output data </em><strong>Run Tutorial 1</strong> - Quick Start in HydroModeler help<em><br>
+</em></p>
+<p><em>3. Creating and running a model configuration &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+</em><strong>Run Tutorial 2</strong> - Creating and running a model configuration</p>
+<p>&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<hr>
+<p><strong>Web Map (Fetch Basemap)<br>
+</strong></p>
+<p>&nbsp;<em>Procedure by Jiri Kadlec, 9/5/2011</em></p>
+<p>Limitations:</p>
+<ul>
+<li>The ESRI HydroBasemap and some other base maps display 'No Data' at a high detail zoom level
+</li></ul>
+<p>Testing procedure 1</p>
+<ol>
+<li>Ensure plugin is activated&nbsp; </li><li>Turn on the ESRI Hydro base map layer </li><li>Change &quot;Opacity&quot; to 80 %&nbsp; </li><li>Zoom to Idaho state . </li></ol>
+<p>Output</p>
+<p>The output of this function should be:</p>
+<p>The ESRI HydroBasemap with borders of Idaho State and watershed regions visible. If the map layers contain a point layer, then the points should be above the Basemap layer in the legend.</p>
+<p>&nbsp;</p>
+<p>Testing Procedure 2</p>
+<ol>
+<li>Ensure ESRI HydroBasemap is turned, opacity is set to 80 % and map is zoomed to &quot;Idaho&quot;
+</li><li>In the application menu, select Save Project As </li><li>Save the project as &quot;basemap_test2.dspx&quot; </li><li>Close HydroDesktop </li><li>Re-open HydroDesktop </li><li>In the welcome screen, select Open Existing Project - basemap_test2.dspx </li></ol>
+<p>Output</p>
+<p>The output of this function should be:</p>
+<p>The ESRI HydroBasemap with opacity set to 80% is visible. The selected basemap in the drop down is &quot;ESRI Hydro Basemap&quot; and selected opacity in the drop down is &quot;80%&quot;.</p>
+<ol>
+</ol>
+<hr>
+<p><strong>EPA Delineator</strong></p>
+<p><em>Procedure by Dan Ames, 9/1/2011</em></p>
+<p>Limitations:</p>
+<ul>
+<li>This tool only works for watersheds in the U.S </li><li>This tool doesn't find the watershed when the clicked point is more than 2 kilometers from an existing stream or river. When running the tool, switch on the Online Basemap &quot;ESRI Hydro Basemap&quot; layer, zoom in and click on a river or stream visible in the
+ ESRI Hydro base map </li><li>Occasionally a &quot;no point found&quot; message is shown when the external EPA web service fails
+</li></ul>
+<p>HydroDesktop Project/Data to use for this test:</p>
+<p><strong>&nbsp;</strong><strong><a title="Jacobs_Well_Spring.zip" href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=310098">Jacobs_Well_Spring.zip</a></strong><strong>&nbsp;</strong></p>
+<p>Testing procedure</p>
+<ol>
+<li>Ensure plugin is activated </li><li>Open the project <strong>Jacobs_Well_Spring.dspx&nbsp; </strong></li><li>Click the &quot;Delineate&quot; Button. </li><li>Click near the site &quot;Jacobs Well Spg nr Wimberley, TX </li></ol>
+<p>Output</p>
+<p>The output of this function should be:</p>
+<p>3 map layers (Watershed Point, Reaches, and Watersheds) in the map showing the watershed.</p>
+<hr>
+<p><strong>Metadata Fetcher<br>
+</strong></p>
+<div><em>Procedure&nbsp; by Jiri Kadlec</em><em>, 10/3/2011</em></div>
+<div>Testing&nbsp; procedure 1</div>
+<div>Run the tutorial <a href="http://download.codeplex.com/download?ProjectName=hydrodesktop&DownloadId=272964">
+</a><a title="Unpublished Web Services Tutorial (1.4)" href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=340161">Unpublished Web Services Tutorial</a> - use the Service URL:</div>
+<div>http://drought.usu.edu/SNOTEL/cuahsi_1_1.asmx</div>
+<hr>
+<p><strong>Help Files</strong></p>
+<div><em>Procedure by Jiri Kadlec, 9/23/2011 (updated by Yoori Choi, 10/5/2011)</em></div>
+<div>Testing procedure 1:</div>
+<div>
+<ol>
+<li>Select the Help tab </li><li>Click User Guide </li><li>Check that the table of contents includes the following items: </li></ol>
+</div>
+<div>
+<ul>
+<li><strong>General concepts</strong>: WaterOneFlowService, Data Management, Search, Projects, Getting Help
+</li><li><strong>Guide Books: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Search and download data, Table tab, Using the Orb, Working with Databases
+</li><li><strong>Extensions: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EPA Tools, Fetch Basemap, HydroModeler, HydroR, Graph Tab, Edit View Tab, Metadata Fetcher
+</li><li><strong>Version History</strong> </li></ul>
+<div>Testing procedure 2:</div>
+<div>
+<ol>
+<li>Select the Help tab </li><li>Click Forum </li></ol>
+</div>
+</div>
+<div>Output</div>
+<div>The output of this function should be:</div>
+<div>It will point to a &quot;Discussion&quot; tab from HydroDesktop Codeplex page (http://hydrodesktop.codeplex.com)</div>
+<div><em>&nbsp;</em>
+<div>
+<div>Testing procedure 3:</div>
+</div>
+<div>
+<div>
+<ol>
+<li>Select the Help tab </li><li>Click Issues </li></ol>
+</div>
+</div>
+<div>Output</div>
+<div>The output of this function should be:</div>
+<div>It will point to a &quot;Issue Tracker&quot; tab from HydroDesktop Codeplex page (http://hydrodesktop.codeplex.com)</div>
+<div>
+<div>
+<div>Testing procedure 4:</div>
+</div>
+<div>
+<div>
+<ol>
+<li>Select the Help tab </li><li>Click About </li></ol>
+</div>
+</div>
+<div>Output</div>
+<div>The output of this function should be:</div>
+<div>The new window (&quot;About HydroDesktop) will be popped up that shows the current version and web site of HydroDesktop.</div>
+<div>
+<div>
+<div>Testing procedure 5:</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<ol>
+<li>Select the Help tab </li><li>Click Submit Comment </li></ol>
+</div>
+</div>
+<div>Output</div>
+<div>The output of this function should be:</div>
+<div>It will point to a &quot;Contact Us&quot; page from HIS project page (http://his.cuahsi.org) then you can use the form for questions, comments, or anything related to CUAHSI HIS.</div>
+</div>
+<em><br>
+</em></div>
+<hr>
+<p>&nbsp;</p>
+<p><strong>Project Files</strong></p>
+<div><em>Procedure by Jiri Kadlec, 9/23/2011</em></div>
+<div>Testing procedure 1 - Open Existing Project</div>
+<div>
+<ol>
+<li>Download and unzip the attached file <a href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=314757">
+Czechia.zip</a>. </li><li>Open HydroDesktop </li><li>In the welcome screen, Select Open Existing Project and click the Browse ... button.
+</li><li>Select the file &quot;Czechia.dspx&quot; in the unzipped folder. </li><li>Check that there are following layers in the map: Prague Climate Data, Online Basemap, Reservoirs, Rivers, Districts, Regions, Czechia
+</li><li>Select the Graph tab. Check that there are 5 series in the selection tool (3 Precipitation series and 2 snow depth series). Select the first series to view the graph.
+</li><li>Select the Table tab. The table shows the series. </li><li>Select the Edit tab. The series is shown in the plot of the Edit View. </li></ol>
+<p>Testing procedure 2&nbsp; - Save Project</p>
+<ol>
+<li>In the legend right-click on regions and select Labeling - label setup </li><li>In Field Names list box, double click on NAME_1 and click OK. The labels of the regions are shown.
+</li><li>In the application menu select Save Project As. Save the project as Czechia2.dspx.
+</li><li>Close HydroDesktop </li><li>Re-Open HydroDesktop. Select 'Open Existing Project' and double-click on Czechia2.
+</li><li>Check that the labels of the regions are shown in the map. </li></ol>
+<ol>
+</ol>
+</div>
+<p>&nbsp;Testing procedure 3 - New Project</p>
+<ol>
+<li>In the file menu select New. </li><li>A message &quot;Save changes to existing project?&quot; is shown </li><li>Select Yes. </li><li>All existing data layers are removed from the map and a new project is created.
+</li></ol>
+<hr>
+<p><strong>&nbsp;Interpolation - Kriging</strong></p>
+<p>Run the <a href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=364300">
+Interpolate Precipitation</a> in a Watershed exercise<strong>&nbsp;</strong></p>
+<p><strong><br>
+</strong></p>
+<hr>
+<p>&nbsp;</p>
+<p><strong>HydroDesktop Tutorial<br>
+</strong></p>
+<p>Run the <a href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=345721">
+</a><a href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=351650">HydroDesktop Tutorial - Jacob's Well</a> exercise</p>
+<p>&nbsp;</p>
+<hr>
+</div><div class="ClearBoth"></div>
