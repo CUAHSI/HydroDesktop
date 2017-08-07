@@ -1,0 +1,133 @@
+<div class="wikidoc">
+<p><br>
+<a href="/wikipage?title=Getting%20HydroDesktop&referringTitle=Developer%20Documentation">Getting HydroDesktop</a>,
+<a href="/wikipage?title=Presentations%20and%20Publications&referringTitle=Developer%20Documentation">
+Presentations and Publications</a>, <a href="/wikipage?title=Functional%20Specifications&referringTitle=Developer%20Documentation">
+Functional Specifications</a>, <a href="/wikipage?title=Database%20Structure&referringTitle=Developer%20Documentation">
+Database Structure</a>, <a href="/wikipage?title=Sample%20Data&referringTitle=Developer%20Documentation">
+Sample Data</a>, <a href="/wikipage?title=Workshops%20and%20Training&referringTitle=Developer%20Documentation">
+Workshops and Training</a>, <a href="/wikipage?title=Current%20Task%20List&referringTitle=Developer%20Documentation">
+Current Task List</a></p>
+<h1>Mailing list</h1>
+<p>When you begin development of code for Hydrodesktop, please sign up for the developer mailing list:</p>
+<ul>
+<li>Sign up at: <a href="/wikipage?title=https%3a%2f%2flists.sdsc.edu%2fmailman%2flistinfo%2fhis-developers&referringTitle=Developer%20Documentation">
+https://lists.sdsc.edu/mailman/listinfo/his-developers</a>
+<ul>
+<li>or send a message to his-sysinfo-request (at) sdsc.edu with the subject help </li></ul>
+</li></ul>
+<p>Also, watch the codeplex discussions</p>
+<h1>HydroDesktop Developer Documentation</h1>
+<ul>
+<li><a href="/wikipage?title=HydroDekstop%20Checking%20out%20the%20Trunk&referringTitle=Developer%20Documentation">HydroDekstop Checking out the Trunk</a>
+</li><li><a href="/wikipage?title=Hydrodesktop%20developing%20on%20a%2064-bit%20OS&referringTitle=Developer%20Documentation">Hydrodesktop developing on a 64-bit OS</a>
+</li><li><a href="/wikipage?title=HydroDesktop%20Object%20Model&referringTitle=Developer%20Documentation">HydroDesktop Object Model</a>
+</li><li><a href="/wikipage?title=HydroDesktop%20Database%20Abstraction%20Layer&referringTitle=Developer%20Documentation">HydroDesktop Database Abstraction Layer</a>
+</li><li><a href="/wikipage?title=HydroDesktop%20Web%20Service%20Components&referringTitle=Developer%20Documentation">HydroDesktop Web Service Components</a>
+</li><li><a href="/wikipage?title=HydroDesktop%20plug-in%20listing&referringTitle=Developer%20Documentation">HydroDesktop plug-in listing</a>
+</li><li><a href="/wikipage?title=Database%20schemas&referringTitle=Developer%20Documentation">Database schemas</a>
+</li><li><a href="/wikipage?title=Logging%20with%20Log4Net&referringTitle=Developer%20Documentation">Logging with Log4Net</a>
+</li><li><a href="/wikipage?title=Project%20Files&referringTitle=Developer%20Documentation">Project Files</a>
+</li><li><a href="https://www.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=116838">Exporting to Text Files with the ImportExport Library.pdf</a>
+</li><li><a href="https://www.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=602568">HydroDesktop-Autobuild-Version-Number.pdf</a>
+</li><li><a href="https://www.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=687392">Create a New Release.docx</a>
+</li></ul>
+<h1>coding practices</h1>
+<ul>
+<li><a href="/wikipage?title=HydroDesktop%20Good%20Coding%20Practices&referringTitle=Developer%20Documentation">HydroDesktop Good Coding Practices</a>
+</li><li><a href="/wikipage?title=Hydrodesktop%20Refactoring%20and%20Implementing%20Unit%20Tests&referringTitle=Developer%20Documentation">Hydrodesktop Refactoring and Implementing Unit Tests</a>
+</li><li><a href="/wikipage?title=HydroDesktop%20Building%20and%20Testing&referringTitle=Developer%20Documentation">HydroDesktop Building and Testing</a>
+</li></ul>
+<h2>Testing Procedures for HydroDesktop</h2>
+<ul>
+<li><a href="http://hydrodesktop.codeplex.com/wikipage?title=TestingProcedures">Testing procedures are available here</a>
+</li></ul>
+<h2>Creating Custom Extensions or Plugins for HydroDesktop</h2>
+<ul>
+<li><span style="font-size:10pt">There are 7 simple steps to create a plugin or extension for HydroDesktop:</span>
+</li></ul>
+<ol>
+<li><span style="font-size:10pt">Download HydroDesktop and install it. It is preferable to have the latest version. You may already have it on your computer. Check the downloads page on this site.</span>
+</li><li><span style="font-size:10pt">In Visual Studio create a new project of type &quot;Class Library&quot;</span>
+</li><li><span style="font-size:10pt">Add references to the DotSpatial GIS libraries that are in your HydroDesktop folder. At a minimum you will need to add references to DotSpatial.Extensions and DotSpatial.Controls.&nbsp;</span>
+</li><li><span style="font-size:10pt">Set the&nbsp;output&nbsp;build path for your assembly to the folder for the plugins in your HydroDesktop directory. For real time debugging capabilities, you can also set the Start Action (in your project properties) to &quot;Start
+ external program&quot; and choose your HydroDesktop executable to be the start up program.</span>
+</li><li><span style="font-size:10pt">Implement the class, 'Extension' in the main class of your extension.</span>
+</li><li><span style="font-size:10pt">Add code to the &quot;Activate&quot; and &quot;Deactivate&quot; methods in your class.</span>
+</li><li><span style="font-size:10pt">Do something cool.&nbsp;</span> </li></ol>
+<ul>
+<li><span style="font-size:10pt">Somewhat more detailed steps are given together with an example plugin for importing a text file here:
+</span><a href="http://download-codeplex.sec.s-msft.com/Download?ProjectName=hydrodesktop&DownloadId=707632" style="font-size:10pt">How to make a plugin.</a>
+</li><li>A sample solution for the above tutorial is available here: <a href="http://download-codeplex.sec.s-msft.com/Download?ProjectName=hydrodesktop&DownloadId=707633">
+Hello World Data Importer</a> </li><li>A very simple hello world sample plugin project with source code is here: <a href="http://download-codeplex.sec.s-msft.com/Download?ProjectName=hydrodesktop&DownloadId=707634">
+Hello HydroDesktop</a> </li><li>Much of the power of a HydroDesktop plugin comes from using and accessing functions in the map environment. Go to the documentation page on
+<a href="http://www.dotspatial.org">www.dotspatial.org</a> to learn more. </li></ul>
+<h2>HydroDesktop Coding Conventions</h2>
+<ul>
+<li>Please adhere to the coding conventions listed here when working on HydroDesktop:
+</li><li><a href="http://www.mapwindow.org/wiki/index.php/MapWindow6:CodeConventions">http://www.mapwindow.org/wiki/index.php/MapWindow6:CodeConventions</a>
+</li></ul>
+<h2>HydroModeler</h2>
+<ul>
+<li>HydroModeler is a plug-in to HydroDesktop that allows for component-based modeling of hydrologic systems that is being prototyped by researchers at the University of South Carolina. The emphasis of HydroModeler is on standards-based data transfer between
+ the HIS and models using the Open Modeling Interface (OpenMI).&nbsp; The motivation for HydroModeler is to provide an environment that supports community-based model development.&nbsp; To learn more about HydroModeler, please see the HydroModeler help files
+ installed with HydroDesktop or email Jon Goodall (goodall@cec.sc.edu).&nbsp; </li></ul>
+<h2>Logos</h2>
+<ul>
+<li>December 2009 logos in PNG and PSD format.&nbsp; </li><li><a href="http://www.codeplex.com/download?ProjectName=hydrodesktop&DownloadId=97167">Logo2.png</a>
+</li><li><a href="http://www.codeplex.com/download?ProjectName=hydrodesktop&DownloadId=97168">Logo2.psd</a>
+</li></ul>
+<h2>Quick Links</h2>
+<p><a href="/wikipage?title=Getting%20HydroDesktop&referringTitle=Documentation">Getting HydroDesktop</a>,
+<a href="/wikipage?title=Presentations%20and%20Publications&referringTitle=Documentation">
+Presentations and Publications</a>, <a href="/wikipage?title=Functional%20Specifications&referringTitle=Documentation">
+Functional Specifications</a>, <a href="/wikipage?title=Database%20Structure&referringTitle=Documentation">
+Database Structure</a>, <a href="/wikipage?title=Sample%20Data&referringTitle=Documentation">
+Sample Data</a>, <a href="/wikipage?title=Workshops%20and%20Training&referringTitle=Documentation">
+Workshops and Training</a>, <a href="http://hydrodesktop.codeplex.com/wikipage?title=HydroDesktop%201.3%20Roadmap">
+Roadmap</a>, <a href="/wikipage?title=Use%20Cases&referringTitle=Documentation">Use Cases</a>,
+<a href="/wikipage?title=Unit%20Tests&referringTitle=Documentation">Unit Tests</a>,
+<a href="/wikipage?title=HydroDesktop%20Testing%20Report&referringTitle=Documentation">
+HydroDesktop Testing Report</a></p>
+<h2>Documentation from Older Versions</h2>
+<ul>
+<li><a href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=356279">HydroDesktop_Quick_Start_Guide.pdf</a>&nbsp;-&nbsp;With a 15-minute walkthrough, this document illustrates how to discover, access, visualize and export hydrologic
+ time series data using HydroDesktop. If you are a new HydroDesktop user, read this guide to get started.
+</li><li><a title="Unpublished Web Services Tutorial" href="http://download-codeplex.sec.s-msft.com/Download?ProjectName=hydrodesktop&DownloadId=697507">Unpublished Web Services Tutorial.pdf</a>&nbsp;- This tutorial will help you access web services from a HydroServer
+ not registered with HIS Central. (also available as&nbsp;<a href="http://download-codeplex.sec.s-msft.com/Download?ProjectName=hydrodesktop&DownloadId=697508">.docx</a>)
+</li><li><a href="http://download.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=351650">HydroDesktop Workshop Exercise</a>&nbsp;- This more advanced exercise was developed by Tim Whiteaker and includes two parts - using HydroDesktop to search and download
+ data, and also using the R plugin in HydroDesktop </li></ul>
+<h2>Plugins</h2>
+<ul>
+<li><a href="/wikipage?title=Graph%20View%20Plugin&referringTitle=Documentation">Graph View Plugin</a> documentation
+</li></ul>
+<h2>Project Files (dspx)</h2>
+<ul>
+<li><a href="/wikipage?title=Project%20Files&referringTitle=Documentation">Project Files</a>
+</li></ul>
+<h1>Automated Build artifacts</h1>
+<ul>
+<li><a href="http://hydro10.sdsc.edu:88/project.html?projectId=project2&tab=projectOverview">Latest Hydrodestop Dev Project</a>
+</li><li><a href="http://hydro10.sdsc.edu:88/project.html?projectId=project17&tab=projectOverview">Hydrodestop 1.4 project</a>
+</li><li><a href="http://hydro10.sdsc.edu:88/project.html?projectId=project7&tab=projectOverview">DotSpatial</a>
+</li></ul>
+<h1>Mac Build</h1>
+<ul>
+<li><a href="/wikipage?title=Building%20on%20HydroDesktop%20on%20Mono&referringTitle=Developer%20Documentation">Building on HydroDesktop on Mono</a>
+</li></ul>
+<h1>CZO Desktop Build</h1>
+<ul>
+<li><a href="/wikipage?title=Customization%20for%20CZO&referringTitle=Developer%20Documentation">Customization for CZO</a>
+</li></ul>
+<p><br>
+For coding conventions, please see the MapWindow conventions at <a href="http://www.mapwindow.org/wiki/index.php/MapWindow6:CodeConventions">
+http://www.mapwindow.org/wiki/index.php/MapWindow6:CodeConventions</a>.<br>
+<br>
+When you're ready to write help documentation, please review the instructions in Documentation\OnlineHelp folder in the repository.</p>
+<h1>Search and Discovery Tool</h1>
+<p>Here is the source code for the Search and Discovery Tool that James Seppi developed and Zichuan Ye improved:
+<a href="https://www.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=171356">
+WFSTest.zip</a></p>
+<h1>Logos and Icons</h1>
+<p><a href="https://www.codeplex.com/Download?ProjectName=hydrodesktop&DownloadId=571889">HydroDesktop.ico</a></p>
+</div><div class="ClearBoth"></div>

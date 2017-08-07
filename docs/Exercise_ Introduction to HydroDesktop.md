@@ -1,0 +1,1 @@
+This exercise was developed for the GIS in Water Resources class at the University of Texas at Austin, Utah State University and the University of Nebraska, Lincoln on Tuesday Sept 2.   It uses the version of HydroDesktop then available for Download, Version 1.1 Beta RC6.
