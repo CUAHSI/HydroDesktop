@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<LinkableComponent Type="N_SR_RC.N_SR_linkableComponent" Assembly="../../bin/SolarRadiation.dll">
-  <Arguments>
-    <Argument Key="ConfigFile" ReadOnly="true" Value="./Config.xml " />
-  </Arguments>
-</LinkableComponent>

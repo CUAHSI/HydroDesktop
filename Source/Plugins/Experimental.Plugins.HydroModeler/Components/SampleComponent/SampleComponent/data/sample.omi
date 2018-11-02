@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LinkableComponent Type="SampleComponent.SampleLinkableComponent" Assembly="..\bin\Debug\SampleComponent.dll">
+  <Arguments>
+    <Argument Key="ConfigFile" ReadOnly="true" Value=".\config.xml" />
+  </Arguments>
+</LinkableComponent>

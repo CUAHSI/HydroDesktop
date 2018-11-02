@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LinkableComponent Type="RandomInputGenerator.InputGenerator" Assembly="..\bin\RandomInputGenerator.dll">
+  <Arguments>
+    <Argument Key="ElementCount" ReadOnly="true" Value="2" />
+  </Arguments>
+</LinkableComponent>

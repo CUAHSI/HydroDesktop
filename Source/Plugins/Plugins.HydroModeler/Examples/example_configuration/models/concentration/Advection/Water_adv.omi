@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<LinkableComponent Type="Water_adv.LinkableComponent" Assembly="..\..\..\bin\Water_adv.dll">
-  <Arguments>
-    <Argument Key="ConfigFile" ReadOnly="true" Value="./config.xml" />
- <Argument Key="Inputs" ReadOnly="true" Value="./inputs.csv" />   
-    <Argument Key="OutputDir" ReadOnly="true" Value="./output" />
-  </Arguments> 
-</LinkableComponent>

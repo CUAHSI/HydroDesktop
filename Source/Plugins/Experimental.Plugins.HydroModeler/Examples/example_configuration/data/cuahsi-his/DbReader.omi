@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<LinkableComponent Type="CUAHSI.HIS.DbReader" Assembly="..\..\bin\DbReader.dll">
+  <Arguments>
+  <Argument Key="RangeInSeconds" ReadOnly="true" Value="2592000" />
+  </Arguments>
+</LinkableComponent>

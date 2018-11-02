@@ -1,8 +1,0 @@
-                        creates a interface with HydroDesktop a
-                        CUAHSI.org product
-getDataSeries           get data from database and stores it in a
-                        dataframe
-getDataWithSQL          get data from database using your own SQL
-                        command and store it in a dataframe
-plotDataSeries          Plots a hydrodesktop dataframe
-plotDataSeriesSetX      Plot data and be able to set the value of X

@@ -1,6 +1,0 @@
-﻿<?xml version="1.0"?>
-<LinkableComponent Type="CUAHSI.HIS.HydroLink" Assembly=".\CUAHSI.HIS.HydroLink.dll">
-  <Arguments>
-    <Argument Key="WaterMLdb" ReadOnly="true" Value="C:\user\jon\projects\HIS\tony_model_example_2\data\cuahsi-his\waterMLdb" />
-  </Arguments>
-</LinkableComponent>

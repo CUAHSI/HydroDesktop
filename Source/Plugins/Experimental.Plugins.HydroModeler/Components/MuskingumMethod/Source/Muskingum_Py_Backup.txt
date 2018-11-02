@@ -1,0 +1,250 @@
+import Muskingum
+import networkx as nx
+import time
+import math
+from StringIO import StringIO
+from lxml import etree
+from networkx import * 
+import matplotlib.pyplot as plot
+
+#wrap as webservice: and call from main()\
+#remove configfile from Engine __init__
+class Reach:
+    def __init__(self, uid, From, To, travel_time, x):
+        self.uid = uid
+        self.K = float(travel_time)
+        self.X = float(x)
+        self.Inflow = {}                                                        
+        self.Outflow = {}                                                      
+        self.C1 = 0
+        self.C2 = 0
+        self.C3 = 0
+        self.From = From
+        self.To = To
+##
+##class FlowProperties:
+##    def __init__(self, c1,c2,c3):                                               
+##        self.Inflow = {'0':0}                                                   
+##        self.Outflow = {'0':0}                                                  
+##        self.C1 = c1
+##        self.C2 = c2
+##        self.C3 = c3
+
+class Engine:
+
+    def __init__(self):
+        pass
+
+    #def initialize(self, configfile, network_relat_path, stream_att_path):
+    def initialize(self, elementset):
+        self.timestepMIN = 0 #time_step
+        self.t = 0 # current_time
+        self.G = nx.DiGraph()
+
+        #Create reaches dictionary
+        self.reaches = {}
+        #Parse FROM, TO K, and X from the XML stream
+        elements = StringIO(elementset)
+        xmltree = etree.parse(elements)
+        #loop through all of the elements within the elementset
+        uid = 1
+        for element in xmltree.getiterator('element'):
+            #loop through all throughhe child nodes of each element
+            for child in element.iterdescendants():
+                if child.tag == "From":
+                    From = child.text
+                elif child.tag =="To":
+                    To = child.text
+                elif child.tag == "K":
+                    K = child.text
+                elif child.tag == "X":
+                    X = child.text
+
+            self.reaches[From] = Muskingum.Reach(uid, From, To, K, X)
+           # self.G.add_edge(self.reaches[From], self.reaches[To])
+            uid += 1
+
+        #Add edges to DiGraph
+        for i in self.reaches:
+#            f = self.reaches[i].From
+#            t = self.reaches[i].To
+            try:
+                self.G.add_edge(self.reaches[i], self.reaches[self.reaches[i].To])
+            except:
+                print self.reaches[i].To + " is an outlet since it has no downstream reaches"
+
+        #Add edges to DiGraph
+#        for edge in self.reaches:
+#            f = self.reaches[edge].From
+#            t = self.reaches[edge].To
+#            self.G.add_edge(self.reaches[f], self.reaches[t])
+
+        #I could not get this line of code to work, it always returned a text
+        #value of "NONE", so I'm extracting the TimeStep in the same manner
+        #as above (looping through all of the decescendants of Time Horizon)
+            #etree.Element("TimeStepInSeconds").text
+
+        #Parse TIMESTEP, START TIME, and END TIME from the XML stream
+        time_format = "%m/%d/%Y %H:%M:%S %p"
+        for element in xmltree.getiterator('TimeHorizon'):
+            for child in element.iterdescendants():
+                if child.tag == "TimeStepInSeconds":
+                    self.timestep_hrs = int(child.text)/3600
+                elif child.tag == "StartDateTime":
+                    start_datetime = time.mktime(time.strptime(child.text, time_format))
+                    print child.tag +" "+ child.text
+                elif child.tag == "EndDateTime":
+                    end_datetime = time.mktime(time.strptime(child.text, time_format))
+                    print child.tag +" "+ child.text
+                    
+                
+
+    
+##        #elements = {}
+##        #for child in xmltree.getiterator():
+##        #    if child.tag != xmltree.getroot().tag:
+##        #        elements[child.tag] = child.text
+##        #self.timestep_hrs = int(elements["TimeStepInSeconds"]) / 3600
+        
+
+##        #Parse the configuration file to fine time_step
+###        xmltree = etree.parse(configfile)
+###        elements = {}
+###        for child in xmltree.getiterator():
+###            if child.tag != xmltree.getroot().tag:
+###                elements[child.tag] = child.text
+###        self.timestep_hrs = int(elements["TimeStepInSeconds"]) / 3600
+###        time_format = "%m/%d/%Y %H:%M:%S %p"
+###        start_datetime = time.mktime(time.strptime(elements["StartDateTime"], time_format))
+###        end_datetime = time.mktime(time.strptime(elements["EndDateTime"], time_format))
+##        #num_time_steps = math.floor( (end_datetime - start_datetime)/ self.timestep_hrs)
+
+
+        #Create reaches dictionary from attribute file
+###        f = open(stream_att_path, 'r')
+###        lines = f.readlines()
+###        self.reaches = {}
+###        for i in lines[1:]:
+###            line = i[0:-1]                                                      #selects all values before "\n"
+###            uid = float(line.split(',')[0])                                     #selects all values before ","
+###            tt = float(line.split(',')[1])                                      #selects all values after ", " and before ","
+###            x = float(line.split(',')[2])                                       #selects all values after ", "
+###            self.reaches[uid] = Muskingum.Reach(uid, tt, x)
+###        f.close()
+#
+#        #read network file and create DiGraph
+#        f = open(network_relat_path, 'r')
+#        lines = f.readlines()
+#        self.G = nx.DiGraph()
+#        print "Edge Network: "
+#        for i in lines[1:]:
+#            line = i[0:-1]                                                      #selects all values before "\n"
+#            From = float(line.split(',')[0])                                      #selects all values before ","
+#            To = float(line.split(',')[1])                                     #selects all values after ", "
+#            self.G.add_edge(self.reaches[From], self.reaches[To])
+#            print "%s to %s" %(From,To)                                          #print edges for debugging
+##
+#        #Calculate C1, C2, C3 from K and X
+#        for i in self.n:
+#            k = self.reaches[i.uid].K
+#            x = self.reaches[i.uid].X
+#            self.reaches[i.uid].C1 = (self.timestep_hrs - 2*k*x)/ (2*k*(1-x) + self.timestep_hrs)
+#            self.reaches[i.uid].C2 = (self.timestep_hrs + 2*k*x)/ (2*k*(1-x) + self.timestep_hrs)
+#            self.reaches[i.uid].C3 = (2*k*(1-x) - self.timestep_hrs) / (2*k*(1-x) + self.timestep_hrs)
+#
+#            #initialize Inflow and Outflow dictionaries to Zero
+#            t = start_datetime
+#            while t <= end_datetime:
+#                self.reaches[i.uid].Inflow[t - start_datetime] = 0
+#                self.reaches[i.uid].Outflow[t - start_datetime] = 0
+#                t += self.timestep_hrs
+
+
+
+
+        #sort digraph
+        self.n =  nx.topological_sort(self.G)                                   #sort edges in self.G
+
+#        draw(self.G)
+#        plot.show()
+
+        #Calculate C1, C2, C3 from K and X
+        for i in self.n:
+            k = self.reaches[i.From].K
+            x = self.reaches[i.From].X
+            self.reaches[i.From].C1 = (self.timestep_hrs - 2*k*x)/ (2*k*(1-x) + self.timestep_hrs)
+            self.reaches[i.From].C2 = (self.timestep_hrs + 2*k*x)/ (2*k*(1-x) + self.timestep_hrs)
+            self.reaches[i.From].C3 = (2*k*(1-x) - self.timestep_hrs) / (2*k*(1-x) + self.timestep_hrs)
+
+            #initialize Inflow and Outflow dictionaries to Zero
+            t = start_datetime
+            while t <= end_datetime:
+                self.reaches[i.From].Inflow[(t - start_datetime)/3600] = 0
+                self.reaches[i.From].Outflow[(t - start_datetime)/3600] = 0
+                t += self.timestep_hrs * 3600   # convert timstep in hrs to timestep in seconds
+
+
+#        # Print edges for Debugging
+#        print "Sorted Nodes:"
+#        for i in self.n:
+#            print "%s" %(i.uid)
+#
+#        print "Sorted Edges:"
+#        for i in self.n:
+#            if (self.G.successors(i)):
+#                print "%s to %s" %(i.uid,self.G.successors(i)[0].uid)           # this assumes that each reach only has one successor
+
+        print "#--- Muskingum.py has been successfully initialized ---#"
+        return True
+
+
+    def performTimeStep(self, inflow):                                       #'inflow' comes from another component
+        self.t += 1 #move to end ??
+
+        e = -1 #input element within the inflow array
+        # loop over all reaches in sorted graph
+        for i in self.n:
+            e += 1
+
+            #extracting reach properties C1, C2, C3
+            c1 = self.reaches[i.uid].C1
+            c2 = self.reaches[i.uid].C2
+            c3 = self.reaches[i.uid].C3
+
+            #get inflow from previous time step
+            In1 = self.reaches[i.uid].Inflow[self.timestep_hrs * (self.t - 1)] #In1 = inflow from last timestep
+
+            #add inflow to In2
+            self.reaches[i.uid].Inflow[self.timestep_hrs * self.t] += inflow[e] #In2 = inflow from this timestep + 'inflow'
+            #get inflow from current time step
+            In2 = self.reaches[i.uid].Inflow[self.timestep_hrs * self.t]  
+                
+            Out1 = self.reaches[i.uid].Outflow[self.timestep_hrs * (self.t - 1)]         #Out1 = outflow from last timestep
+            
+            self.reaches[i.uid].Outflow[self.timestep_hrs * self.t] = c1*In2 + c2*In1 + c3*Out1 #Muskingum routed outflow
+            if self.G.successors(i):
+                    self.reaches[self.G.successors(i)[0].uid].Inflow[self.timestep_hrs * self.t] += self.reaches[i.uid].Outflow[self.timestep_hrs * self.t]
+                    self.reaches[i.uid].Inflow[self.timestep_hrs * (self.t - 1)] = In2
+               
+            #output flows for debuging
+            if self.G.successors(i):
+                successor = self.G.successors(i)[0].uid
+            else:
+                successor = "outlet"
+
+            print "Flow from %s to %s equals %s" %(i.uid, successor, self.reaches[i.uid].Outflow[self.timestep_hrs * self.t])
+
+
+    def finalize(self, test):
+        #write out results
+        print "I have been accessed by C#"
+        print test
+        return True
+
+
+
+##################################################
+
+
+
+

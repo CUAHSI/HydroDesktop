@@ -1,0 +1,1408 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Oatc.OpenMI.Sdk.Backbone</name>
+    </assembly>
+    <members>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.Vertex">
+            <summary>
+            The Vertex class contains a (x,y,z) coordinate
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vertex.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vertex.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="x">X coordinate</param>
+            <param name="y">Y coordinate</param>
+            <param name="z">Z coordinate</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vertex.#ctor(Oatc.OpenMI.Sdk.Backbone.Vertex)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The vertex to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vertex.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vertex.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vertex.ToString">
+            <summary>
+             String representation of the vertext
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Vertex.x">
+            <summary>
+            Getter and setter for X coordinate
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Vertex.y">
+            <summary>
+            Getter and setter for X coordinate
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Vertex.z">
+            <summary>
+            Getter and setter for X coordinate
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.Unit">
+            <summary>
+            The Unit class defines a unit for a quantity.
+            <para>This is a trivial implementation of OpenMI.Standard.IUnit, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Unit.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Unit.#ctor(OpenMI.Standard.IUnit)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The unit to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Unit.#ctor(System.String,System.Double,System.Double)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="ID">ID</param>
+            <param name="conversionFactor">Conversion factor to SI</param>
+            <param name="conversionOffset">Conversion offset to SI</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Unit.#ctor(System.String,System.Double,System.Double,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="ID">ID</param>
+            <param name="conversionFactor">Conversion factor to SI</param>
+            <param name="conversionOffset">Conversion offset to SI</param>
+            <param name="description">Description</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Unit.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Unit.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Unit.Description">
+            <summary>
+            Getter and setter for description
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Unit.ConversionFactorToSI">
+            <summary>
+            Getter and setter for conversion factor to SI
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Unit.OffSetToSI">
+            <summary>
+            Getter and setter for offset to SI
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Unit.ID">
+            <summary>
+            Getter and setter for ID
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.SpatialReference">
+            <summary>
+            This class defines a spatial references.
+            <para>This is a trivial implementation of OpenMI.Standard.ISpatialReference, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.SpatialReference.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.SpatialReference.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="ID">Spatial reference ID</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.SpatialReference.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.SpatialReference.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.SpatialReference.ID">
+            <summary>
+            Getter and setter for ID
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.Argument">
+            <summary>
+            Argument is a class that contains (key,value) pairs.
+            <para>This is a trivial implementation of OpenMI.Standard.IArgument, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Argument.#ctor">
+            <summary>
+            Empty constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Argument.#ctor(OpenMI.Standard.IArgument)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">Source argument to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Argument.#ctor(System.String,System.String,System.Boolean,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="key">Key</param>
+            <param name="Value">Value</param>
+            <param name="ReadOnly">Is argument read-only?</param>
+            <param name="Description">Description</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Argument.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Argument.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Argument.Key">
+            <summary>
+             TODO: comment
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Argument.Value">
+            <summary>
+             TODO: comment
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Argument.ReadOnly">
+            <summary>
+             TODO: comment
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Argument.Description">
+            <summary>
+             TODO: comment
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.Event">
+            <summary>
+            Events are used to send informative and warning messages.
+            <para>This is a trivial implementation of OpenMI.Standard.IEvent, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Event.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Event.#ctor(OpenMI.Standard.EventType)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="type">Event type</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Event.SetAttribute(System.String,System.Object)">
+            <summary>
+            Sets an attribute for the event with a (key,value) pair
+            </summary>
+            <param name="key">The key</param>
+            <param name="val">The value</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Event.GetAttribute(System.String)">
+            <summary>
+            Gets an attribute for a given key
+            </summary>
+            <param name="key">The key</param>
+            <returns>The attribute</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Event.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Event.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Event.Type">
+            <summary>
+            Getter and setter for the event type
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Event.Sender">
+            <summary>
+            Getter and setter for the sender
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Event.SimulationTime">
+            <summary>
+            Getter and setter for the simulation time
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Event.Description">
+            <summary>
+            Getter and setter for the description
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.Element">
+            <summary>
+            The Element class contains a spatial element.
+            <para>This is a trivial implementation for use with Oatc.OpenMI.Sdk.Backbone.ElementSet, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Element.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Element.#ctor(Oatc.OpenMI.Sdk.Backbone.Element)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The element to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Element.#ctor(System.String)">
+            <summary>
+            Constructor function
+            </summary>
+            <param name="ID">The Element ID</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Element.GetVertex(System.Int32)">
+            <summary>
+            Gets a vertex
+            </summary>
+            <param name="Index">The vertex index</param>
+            <returns>The vertex</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Element.AddVertex(Oatc.OpenMI.Sdk.Backbone.Vertex)">
+            <summary>
+            Adds a vertex
+            </summary>
+            <param name="vertex">The vertex to add</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Element.AddFace(System.Int32[])">
+            <summary>
+            Adds a face
+            </summary>
+            <param name="vertexIndices">The vertex indices for the face</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Element.GetFaceVertexIndices(System.Int32)">
+            <summary>
+            Returns the face vertex indices for a face
+            </summary>
+            <param name="faceIndex">The face index</param>
+            <returns>The face vertex indices</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Element.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Element.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Element.ToString">
+            <summary>
+             String representation of the element
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Element.Vertices">
+            <summary>
+            Setter and getter functions for the vertex list
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Element.VertexCount">
+            <summary>
+            Returns the vertex count
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Element.ID">
+            <summary>
+            Getter and setter functions for the element ID
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Element.FaceCount">
+            <summary>
+            Returns the number of faces
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.Dimension">
+            <summary>
+            The Dimension class contains the dimension for a unit.
+            <para>This is a trivial implementation of OpenMI.Standard.IDimension, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Dimension.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Dimension.GetPower(OpenMI.Standard.DimensionBase)">
+            <summary>
+            Returns the power of a base quantity
+            </summary>
+            <param name="baseQuantity">The base quantity</param>
+            <returns>The power</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Dimension.SetPower(OpenMI.Standard.DimensionBase,System.Double)">
+            <summary>
+            Sets a power for a base quantity
+            </summary>
+            <param name="baseQuantity">The base quantity</param>
+            <param name="power">The power</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Dimension.Equals(OpenMI.Standard.IDimension)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.ScalarSet">
+            <summary>
+            The ScalarSet class contains a list of scalar values.
+            <para>This is a trivial implementation of OpenMI.Standard.IScalarSet, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ScalarSet.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ScalarSet.#ctor(System.Double[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="values">The list of values</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ScalarSet.IsValid(System.Int32)">
+            <summary>
+            Returns if a certain element is valid
+            </summary>
+            <param name="elementIndex">Element index</param>
+            <returns>True if element is valid</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ScalarSet.#ctor(OpenMI.Standard.IScalarSet)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The scalar set to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ScalarSet.GetScalar(System.Int32)">
+            <summary>
+            Gets a value from the list of values
+            </summary>
+            <param name="ElementIndex">The element index</param>
+            <returns>The scalar value</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ScalarSet.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ScalarSet.isEqual(System.Double,System.Double)">
+            <summary>
+            Will compare two doubles, using _doubleEpsilon.
+            </summary>
+            <param name="double1">First double</param>
+            <param name="double2">Second double</param>
+            <returns>True if double1 and double2 are equal.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ScalarSet.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ScalarSet.data">
+            <summary>
+            Gives direct access to the data
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ScalarSet.Count">
+            <summary>
+            Returns the number of values
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ScalarSet.MissingValueDefinition">
+            <summary>
+             Getter and Setter for the missing value definition.
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ScalarSet.CompareDoublesEpsilon">
+            <summary>
+             The epsilon (i.e. the small double value) that should be used when
+             checking
+             
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.Vector">
+            <summary>
+            The Vector class contains x,y,z components.
+            <para>This is a trivial implementation of OpenMI.Standard.IVector, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vector.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vector.#ctor(OpenMI.Standard.IVector)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The vector to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vector.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="x">x value</param>
+            <param name="y">y value</param>
+            <param name="z">z value</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vector.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Vector.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Vector.XComponent">
+            <summary>
+            Getter and setter for x component
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Vector.YComponent">
+            <summary>
+            Getter and setter for y component
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Vector.ZComponent">
+            <summary>
+            Getter and setter for z component
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.VectorSet">
+            <summary>
+            The VectorSet class contains a list of vectors.
+            <para>This is a trivial implementation of OpenMI.Standard.IVectorSet, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.VectorSet.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.VectorSet.#ctor(Oatc.OpenMI.Sdk.Backbone.Vector[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="Values">List of vectors</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.VectorSet.#ctor(OpenMI.Standard.IVectorSet)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The VectorSet to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.VectorSet.IsValid(System.Int32)">
+            <summary>
+            Returns if a element is valid
+            </summary>
+            <param name="elementIndex">Element index</param>
+            <returns>True if the element is valid</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.VectorSet.GetVector(System.Int32)">
+            <summary>
+            Gets a vector with a given index
+            </summary>
+            <param name="index">Index</param>
+            <returns>The vector</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.VectorSet.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.VectorSet.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.VectorSet.Count">
+            <summary>
+            The number of elements in the list
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.DataOperation">
+            <summary>
+            The DataOperation class contains operations the providing component should
+            carry out on the data.
+            <para>This is a trivial implementation of OpenMI.Standard.IDataOperation, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.DataOperation.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.DataOperation.Initialize(OpenMI.Standard.IArgument[])">
+            <summary>
+            Initialize method
+            </summary>
+            <param name="properties">The arguments for the data operations</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.DataOperation.#ctor(OpenMI.Standard.IDataOperation)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The Data Operation to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.DataOperation.#ctor(System.String)">
+            <summary>
+            Constructor with just a string ID
+            </summary>
+            <param name="ID">The ID</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.DataOperation.GetArgument(System.Int32)">
+            <summary>
+            Gets one argument
+            </summary>
+            <param name="argumentIndex">The index of the argument</param>
+            <returns>The argument</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.DataOperation.AddArgument(OpenMI.Standard.IArgument)">
+            <summary>
+            Adds an argument
+            </summary>
+            <param name="argument">The argument to add</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.DataOperation.IsValid(OpenMI.Standard.IInputExchangeItem,OpenMI.Standard.IOutputExchangeItem,OpenMI.Standard.IDataOperation[])">
+            <summary>
+            Checks whether the current data operation is valid for the combination of
+            input and output exchange items
+            </summary>
+            <param name="inputExchangeItem">The input exchange item</param>
+            <param name="outputExchangeItem">The output exchange item</param>
+            <param name="SelectedDataOperations">The selected data operations</param>
+            <returns>True if the data operation is valid</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.DataOperation.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.DataOperation.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.DataOperation.ID">
+            <summary>
+            Setter and getter methods for ID
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.DataOperation.ArgumentCount">
+            <summary>
+            Getter method for the argument count
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.DataOperation.Arguments">
+            <summary>
+            Setter and getter methods for the arguments
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.InputExchangeItem">
+            <summary>
+            The input exchange item is an exchange item used for inputs
+            in the receiving component.
+            <para>This is a trivial implementation of OpenMI.Standard.IInputExchangeItem, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.ExchangeItem">
+            <summary>
+            The exchange item is a combination of a quantity and an element set.
+            <para>This is a trivial implementation of OpenMI.Standard.IExchangeItem, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ExchangeItem.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ExchangeItem.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ExchangeItem.Quantity">
+            <summary>
+            Getter and setter for the quantity
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ExchangeItem.ElementSet">
+            <summary>
+            Getter and setter for the element set.
+            See <see cref="P:OpenMI.Standard.IExchangeItem.ElementSet">IExchangeItem.ElementSet</see>.
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.TimeSpan">
+            <summary>
+            The TimeSpan class defines a time span given a
+            start and end time.
+            <para>This is a trivial implementation of OpenMI.Standard.ITimeSpan, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeSpan.#ctor(OpenMI.Standard.ITimeStamp,OpenMI.Standard.ITimeStamp)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="Start">Start time</param>
+            <param name="End">End time</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeSpan.#ctor(OpenMI.Standard.ITimeSpan)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The time span to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeSpan.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeSpan.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.TimeSpan.Start">
+            <summary>
+            Getter and setter for start time
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.TimeSpan.End">
+            <summary>
+            Getter and setter for end time
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.LinkableComponent">
+            <summary>
+            The LinkableComponent provides the OpenMI interface to the wrapped engine.
+            <para>This is a trivial implementation of OpenMI.Standard.ILinkableComponent, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.Prepare">
+            <summary>
+            Called before computation
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.GetValues(OpenMI.Standard.ITime,System.String)">
+            <summary>
+            Returns computed values
+            </summary>
+            <param name="time">The timestamp/timespan for which to return values</param>
+            <param name="LinkID">The linkID describing on which link values to return</param>
+            <returns>The computed values</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.AddLink(OpenMI.Standard.ILink)">
+            <summary>
+            Adds a link
+            </summary>
+            <param name="NewLink">The link</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.RemoveLink(System.String)">
+            <summary>
+            Removes a link
+            </summary>
+            <param name="LinkID">The link ID</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.GetAcceptingLinks">
+            <summary>
+            Returns the accepting links
+            </summary>
+            <returns>The accepting links</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.GetProvidingLinks">
+            <summary>
+            Returns the providing links
+            </summary>
+            <returns>The providing links</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.GetLink(System.String)">
+            <summary>
+            Gets a link
+            </summary>
+            <param name="LinkID">The link ID</param>
+            <returns>The link</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.Subscribe(OpenMI.Standard.IListener,OpenMI.Standard.EventType)">
+            <summary>
+            Subscribes to an event
+            </summary>
+            <param name="Listener">The listener</param>
+            <param name="EventType">The event type</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.UnSubscribe(OpenMI.Standard.IListener,OpenMI.Standard.EventType)">
+            <summary>
+            Unsubscribes to an event
+            </summary>
+            <param name="Listener">The listener</param>
+            <param name="EventType">The event type</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.SendEvent(OpenMI.Standard.IEvent)">
+            <summary>
+            Sends an event
+            </summary>
+            <param name="theEvent">The event</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.GetPublishedEventType(System.Int32)">
+            <summary>
+            Returns a published event type
+            </summary>
+            <param name="providedEventTypeIndex">The event index</param>
+            <returns>The published event</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.GetPublishedEventTypeCount">
+            <summary>
+            Returns the number of published events
+            </summary>
+            <returns>The number of published events</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="source">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.Dispose">
+            <summary>
+             Dispose function
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.GetInputExchangeItem(System.Int32)">
+            <summary>
+            Returns an input exchange item
+            </summary>
+            <param name="inputExchangeItemIndex">The input exchange item index</param>
+            <returns>The input exchange item</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.Validate">
+            <summary>
+            Returns if the component is valid (contains valid data)
+            </summary>
+            <returns>True if the component is valid</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.GetOutputExchangeItem(System.Int32)">
+            <summary>
+            Returns an output exchange item
+            </summary>
+            <param name="outputExchangeItemIndex">The output exchange item index</param>
+            <returns>The output exchange item</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.AddInputExchangeItem(OpenMI.Standard.IInputExchangeItem)">
+            <summary>
+            Adds an input exchange item
+            </summary>
+            <param name="exchangeItem">The input exchange item</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.AddOutputExchangeItem(OpenMI.Standard.IOutputExchangeItem)">
+            <summary>
+            Adds an output exchange item
+            </summary>
+            <param name="exchangeItem">The output exchange item</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.Initialize(OpenMI.Standard.IArgument[])">
+            <summary>
+            Initializes the component with the given arguments
+            </summary>
+            <param name="properties">The arguments</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.Finish">
+            <summary>
+            Finish clears up allocated memory and closes files
+            After this method is called no other methods should
+            be called on the LinkableComponent
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.ToString">
+            <summary>
+            Returns a string describing this linkable component
+            </summary>
+            <returns>The description</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.HasListeners">
+            <summary>
+            Returns true if the linkable component has listeners
+            </summary>
+            <returns>True is linkable component has listeners</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.LinkCount">
+            <summary>
+            Returns the number of links
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.ComponentDescription">
+            <summary>
+            Returns the component description
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.InputExchangeItemCount">
+            <summary>
+            Returns the number of input exchange items
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.TimeHorizon">
+            <summary>
+            Returns the time horizon, which is the simulation start and stop
+            time for this component
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.EarliestInputTime">
+            <summary>
+            Returns the earliest time for which input is needed
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.ComponentID">
+            <summary>
+            Returns the component ID
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.ModelDescription">
+            <summary>
+            The model description
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.ModelID">
+            <summary>
+            The model ID
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.LinkableComponent.OutputExchangeItemCount">
+            <summary>
+            The number of output exchange items
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.Quantity">
+            <summary>
+            The Quantity class contains a unit, description, id, and dimension.
+            <para>This is a trivial implementation of OpenMI.Standard.IQuantity, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Quantity.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Quantity.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="id">ID</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Quantity.#ctor(OpenMI.Standard.IQuantity)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The quantity to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Quantity.#ctor(OpenMI.Standard.IUnit,System.String,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="unit">Unit</param>
+            <param name="Description">Description</param>
+            <param name="ID">ID</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Quantity.#ctor(OpenMI.Standard.IUnit,System.String,System.String,OpenMI.Standard.ValueType)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="unit">Unit</param>
+            <param name="Description">Description</param>
+            <param name="ID">ID</param>
+            <param name="valueType">Value type (vector or scalar)</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Quantity.#ctor(OpenMI.Standard.IUnit,System.String,System.String,OpenMI.Standard.ValueType,OpenMI.Standard.IDimension)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="unit">Unit</param>
+            <param name="Description">Description</param>
+            <param name="ID">ID</param>
+            <param name="valueType">Value type (vector or scalar)</param>
+            <param name="Dimension">Dimension</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Quantity.ToString">
+            <summary>
+            Returns the ID
+            </summary>
+            <returns>ID</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Quantity.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Quantity.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Quantity.ID">
+            <summary>
+            Getter and setter for ID
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Quantity.Dimension">
+            <summary>
+            Getter and setter for Dimension
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Quantity.Description">
+            <summary>
+            Getter and setter for description
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Quantity.Unit">
+            <summary>
+            Getter and setter for unit
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Quantity.ValueType">
+            <summary>
+            Getter and setter for value type (scalar/vector)
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.OutputExchangeItem">
+            <summary>
+            The output exchange item is an exchange item used for outputs
+            from the transmitting component.
+            <para>This is a trivial implementation of OpenMI.Standard.IOutputExchangeItem, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.OutputExchangeItem.GetDataOperation(System.Int32)">
+            <summary>
+            Get a data operation. See <see cref="M:OpenMI.Standard.IOutputExchangeItem.GetDataOperation(System.Int32)"/>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.OutputExchangeItem.AddDataOperation(OpenMI.Standard.IDataOperation)">
+            <summary>
+            Adds a data operation.
+            </summary>
+            <param name="dataOperation">The data operation to be added</param>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.OutputExchangeItem.DataOperationCount">
+            <summary>
+            Getter for the number of data operations. See <see cref="P:OpenMI.Standard.IOutputExchangeItem.DataOperationCount"/>.
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.OutputExchangeItem.DataOperations">
+            <summary>
+            The list of data operations
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.TimeStamp">
+            <summary>
+            The TimeStamp class defines a time instant.
+            <para>This is a trivial implementation of OpenMI.Standard.TimeStamp, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeStamp.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeStamp.#ctor(OpenMI.Standard.ITimeStamp)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The time stamp to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeStamp.#ctor(System.Double)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="ModifiedJulianDay">The modified julian day for the time stamp</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeStamp.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeStamp.GetHashCode">
+            <summary>
+            Returns the hash code
+            </summary>
+            <returns>The hash code</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeStamp.CompareTo(System.Object)">
+            <summary>
+            Compares two timestamps
+            </summary>
+            <param name="obj">The timestamp to compare with</param>
+            <returns>The result of the comparison</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.TimeStamp.ToString">
+            <summary>
+            Converts the time stamp to a string
+            </summary>
+            <returns>String converted time stamp</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.TimeStamp.ModifiedJulianDay">
+            <summary>
+            Getter and setter for the modified julian day
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.ElementSet">
+            <summary>
+            The ElementSet class describes a collection of spatial elements.
+            <para>This is a trivial implementation of OpenMI.Standard.IElementSet, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.#ctor(OpenMI.Standard.IElementSet)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The element set to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.#ctor(System.String,System.String,OpenMI.Standard.ElementType,OpenMI.Standard.ISpatialReference)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="Description">Description</param>
+            <param name="ID">ID</param>
+            <param name="ElementType">Element type</param>
+            <param name="SpatialReference">Spatial reference</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.AddElement(Oatc.OpenMI.Sdk.Backbone.Element)">
+            <summary>
+            Adds an element
+            </summary>
+            <param name="element">The element to add</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.GetElement(System.Int32)">
+            <summary>
+            Gets an element
+            </summary>
+            <param name="ElementIndex">The element index</param>
+            <returns>The element</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.GetElementID(System.Int32)">
+            <summary>
+            Returns an element ID for an element
+            </summary>
+            <param name="ElementIndex">The element index</param>
+            <returns>The element ID</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.GetXCoordinate(System.Int32,System.Int32)">
+            <summary>
+            Returns the x coordinate for a vertex
+            </summary>
+            <param name="ElementIndex">The element index</param>
+            <param name="VertexIndex">The vertex index</param>
+            <returns>The x coordinate</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.GetYCoordinate(System.Int32,System.Int32)">
+            <summary>
+            Returns the y coordinate for a vertex
+            </summary>
+            <param name="ElementIndex">The element index</param>
+            <param name="VertexIndex">The vertex index</param>
+            <returns>The y coordinate</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.GetZCoordinate(System.Int32,System.Int32)">
+            <summary>
+            Returns the z coordinate for a vertex
+            </summary>
+            <param name="ElementIndex">The element index</param>
+            <param name="VertexIndex">The vertex index</param>
+            <returns>The z coordinate</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.GetVertexCount(System.Int32)">
+            <summary>
+            Returns the number of vertices for an element
+            </summary>
+            <param name="ElementIndex">The element index</param>
+            <returns>The number of vertices for this element</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.GetElementIndex(System.String)">
+            <summary>
+            Returns the element index for a given element ID
+            </summary>
+            <param name="ElementID">The element ID</param>
+            <returns>The element index</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.GetFaceVertexIndices(System.Int32,System.Int32)">
+            <summary>
+            Returns the list of face vertex indices for a given element and face
+            </summary>
+            <param name="elementIndex">The element index</param>
+            <param name="faceIndex">The face index</param>
+            <returns>List of face vertex indices</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.GetFaceCount(System.Int32)">
+            <summary>
+            Returns the face count for a given element
+            </summary>
+            <param name="elementIndex">The element index</param>
+            <returns>The face count for the given element</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.ElementSet.ToString">
+            <summary>
+             String representation of the 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ElementSet.Version">
+            <summary>
+            ElementSet version
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ElementSet.Elements">
+            <summary>
+            Getter and setter functions for the element list
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ElementSet.Description">
+            <summary>
+            Setter and getter for the element set description
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ElementSet.ID">
+            <summary>
+            Setter and getter for the element set ID
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ElementSet.ElementType">
+            <summary>
+            Setter and getter for the element type
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ElementSet.ElementCount">
+            <summary>
+            Returns the number of elements
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.ElementSet.SpatialReference">
+            <summary>
+            Getter and setter for the spatial reference
+            </summary>
+        </member>
+        <member name="T:Oatc.OpenMI.Sdk.Backbone.Link">
+            <summary>
+            The link is used to describe the data transfer between
+            linkable components.
+            <para>This is a trivial implementation of OpenMI.Standard.ILink, refer there for further details.</para>
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Link.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Link.#ctor(OpenMI.Standard.ILink)">
+            <summary>
+            Copy constructor
+            </summary>
+            <param name="source">The link to copy</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Link.#ctor(OpenMI.Standard.ILinkableComponent,OpenMI.Standard.IElementSet,OpenMI.Standard.IQuantity,OpenMI.Standard.ILinkableComponent,OpenMI.Standard.IElementSet,OpenMI.Standard.IQuantity,System.String,System.String,System.Collections.ArrayList)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="SourceComponent">The source component</param>
+            <param name="SourceElementSet">The source element set</param>
+            <param name="SourceQuantity">The source quantity</param>
+            <param name="TargetComponent">The target component</param>
+            <param name="TargetElementSet">The target element set</param>
+            <param name="TargetQuantity">The target quantity</param>
+            <param name="Description">The description</param>
+            <param name="ID">The ID</param>
+            <param name="DataOperations">Data operations to be carried out by the provider</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Link.#ctor(OpenMI.Standard.ILinkableComponent,OpenMI.Standard.IElementSet,OpenMI.Standard.IQuantity,OpenMI.Standard.ILinkableComponent,OpenMI.Standard.IElementSet,OpenMI.Standard.IQuantity,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="SourceComponent">The source component</param>
+            <param name="SourceElementSet">The source element set</param>
+            <param name="SourceQuantity">The source quantity</param>
+            <param name="TargetComponent">The target component</param>
+            <param name="TargetElementSet">The target element set</param>
+            <param name="TargetQuantity">The target quantity</param>
+            <param name="ID">The ID</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Link.AddDataOperation(OpenMI.Standard.IDataOperation)">
+            <summary>
+            Adds a data operation
+            </summary>
+            <param name="dataOperation">The data operation</param>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Link.GetDataOperation(System.Int32)">
+            <summary>
+            Gets a data operation
+            </summary>
+            <param name="DataOperationIndex">The index of the data operation</param>
+            <returns>The data operation</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Link.Equals(System.Object)">
+            <summary>
+             Check if the current instance equals another instance of this class.
+            </summary>
+            <param name="obj">The instance to compare the current instance with.</param>
+            <returns><code>true</code> if the instances are the same instance or have the same content.</returns>
+        </member>
+        <member name="M:Oatc.OpenMI.Sdk.Backbone.Link.GetHashCode">
+            <summary>
+             Get Hash Code.
+            </summary>
+            <returns>Hash Code for the current instance.</returns>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Link.ID">
+            <summary>
+            Getter and setter for the link ID
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Link.Description">
+            <summary>
+            Getter and setter for the link description
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Link.SourceComponent">
+            <summary>
+            Getter and setter for the source component
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Link.SourceQuantity">
+            <summary>
+            Getter and setter for the source quantity
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Link.SourceElementSet">
+            <summary>
+            Getter and setter for the source element set
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Link.TargetComponent">
+            <summary>
+            Getter and setter for the target component
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Link.TargetQuantity">
+            <summary>
+            Getter and setter for the target quantity
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Link.TargetElementSet">
+            <summary>
+            Getter and setter for the target element set
+            </summary>
+        </member>
+        <member name="P:Oatc.OpenMI.Sdk.Backbone.Link.DataOperationsCount">
+            <summary>
+            The number of data operations
+            </summary>
+        </member>
+    </members>
+</doc>

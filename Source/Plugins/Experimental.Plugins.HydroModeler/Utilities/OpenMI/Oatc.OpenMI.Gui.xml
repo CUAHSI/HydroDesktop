@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Oatc.OpenMI.Gui.CommandLine</name>
+    </assembly>
+    <members>
+        <member name="T:Oatc.OpenMI.Gui.CommandLine.MainClass">
+            <summary>
+            Summary description for Class1.
+            </summary>
+        </member>
+        <member name="M:Oatc.OpenMI.Gui.CommandLine.MainClass.Main(System.String[])">
+            <summary>
+            The main entry point for the application.
+            </summary>		
+        </member>
+    </members>
+</doc>

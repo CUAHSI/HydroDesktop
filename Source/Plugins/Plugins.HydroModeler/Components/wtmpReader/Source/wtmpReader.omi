@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<LinkableComponent Type="WR_LC.Et_linkableComponent" Assembly="./bin/wtmpReaderForDbwriter.dll">
-  <Arguments>
-    <Argument Key="ConfigFile" ReadOnly="true" Value="./config.xml" />
-    <Argument Key="DataFolder" ReadOnly="true" Value="../data" />
-  </Arguments>
-</LinkableComponent>

@@ -1,0 +1,4 @@
+Hydrodesktop Priestley-Taylor Potantial Evapotranspiration Component Coefficients.
+This file gives flexibility to determine some coefficients.
+Kc=,0.85,//Average Crop Coefficient over the watershed.
+Alpha=,1.3,//Coefficient = 1.26 for humid and 1.74 for arid areas.(http://www.iiasa.ac.at/Admin/PUB/Documents/WP-94-064.pdf explanations is on page 9/33)

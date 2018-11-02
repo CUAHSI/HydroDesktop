@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "Test\UnitTest.csproj", "{39E2ACDB-3B4B-4097-ADA8-171FC781F03A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiffusiveWave", "DiffusiveWave.csproj", "{EB47C62A-9858-418C-BC83-0122BD082064}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39E2ACDB-3B4B-4097-ADA8-171FC781F03A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39E2ACDB-3B4B-4097-ADA8-171FC781F03A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39E2ACDB-3B4B-4097-ADA8-171FC781F03A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39E2ACDB-3B4B-4097-ADA8-171FC781F03A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB47C62A-9858-418C-BC83-0122BD082064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB47C62A-9858-418C-BC83-0122BD082064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB47C62A-9858-418C-BC83-0122BD082064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB47C62A-9858-418C-BC83-0122BD082064}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

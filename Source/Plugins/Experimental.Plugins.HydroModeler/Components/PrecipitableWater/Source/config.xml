@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Configuration>
+  <ExchangeItems>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>Precipitable Water</ID>
+        <Description> </Description>
+        <ShapefilePath>..\Data\elements.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>P</ID>
+        <Description>Precipitable Water</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Length</Base>
+            <Power>1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm</ID>
+          <Description>millimeter</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Temperature</ID>
+        <Description> </Description>
+        <Version>1</Version>
+        <ShapefilePath>..\Data\elements.shp</ShapefilePath>
+      </ElementSet>
+      <Quantity>
+        <ID>T</ID>
+        <Description>Temperature</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>1</Power>
+            <Base>Thermo</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>C</ID>
+          <Description>Celsius</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+  </ExchangeItems>
+  <TimeHorizon>
+    <StartDateTime>06/26/2010 00:00:00 </StartDateTime>
+    <EndDateTime>07/1/2010 00:00:00 </EndDateTime>
+    <TimeStepInSeconds>86400</TimeStepInSeconds>
+  </TimeHorizon>
+  <ModelInfo>
+    <ID>Precipitable Water</ID>
+    <Description>none</Description>
+  </ModelInfo>
+</Configuration>

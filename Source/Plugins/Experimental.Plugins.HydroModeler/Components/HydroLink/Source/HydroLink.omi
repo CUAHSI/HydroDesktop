@@ -1,0 +1,6 @@
+﻿<?xml version="1.0"?>
+<LinkableComponent Type="CUAHSI.HIS.HydroLink" Assembly=".\HydroLink.dll">
+  <Arguments>
+    <Argument Key="WaterMLdb" ReadOnly="true" Value=".\waterMLdb" />
+  </Arguments>
+</LinkableComponent>

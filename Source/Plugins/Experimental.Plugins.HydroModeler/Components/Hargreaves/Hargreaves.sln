@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hargreaves", "Hargreaves.csproj", "{7EF6F087-E4F2-4F65-9805-DCCA45F67E25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{4A71A9F5-751C-4BCE-9202-1C0FD1FB8E4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbWriter", "..\DbWriter\Source\DbWriter.csproj", "{1CBE4440-985E-405B-BFBE-01F0E26AD2C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7EF6F087-E4F2-4F65-9805-DCCA45F67E25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EF6F087-E4F2-4F65-9805-DCCA45F67E25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EF6F087-E4F2-4F65-9805-DCCA45F67E25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EF6F087-E4F2-4F65-9805-DCCA45F67E25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A71A9F5-751C-4BCE-9202-1C0FD1FB8E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A71A9F5-751C-4BCE-9202-1C0FD1FB8E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A71A9F5-751C-4BCE-9202-1C0FD1FB8E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A71A9F5-751C-4BCE-9202-1C0FD1FB8E4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CBE4440-985E-405B-BFBE-01F0E26AD2C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CBE4440-985E-405B-BFBE-01F0E26AD2C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CBE4440-985E-405B-BFBE-01F0E26AD2C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CBE4440-985E-405B-BFBE-01F0E26AD2C5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

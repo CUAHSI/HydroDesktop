@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<LinkableComponent Type="edu.SC.Models.Routing.Muskingum_LC" Assembly="..\..\..\bin\edu.SC.MuskingumMethod.dll">
-  <Arguments>
-    <Argument Key="ConfigFile" ReadOnly="true" Value="musk_config.xml" />
-	<Argument Key="OutDir" ReadOnly="true" Value = "../" />
-  </Arguments>
-</LinkableComponent>
