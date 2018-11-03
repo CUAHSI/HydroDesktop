@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>HydroDesktop Version 1.8
+
+Developed for the Consortium of Universities for the Advancement of Hydrologic Science as a desktop client for the CUAHSI Hydrologic Information System (see www.cuahsi.org).
+
+Development team at Idaho State University, Brigham Young University, Utah State University, University of Virginia, University of Texas at Austin, and University of California - San Diego led by Dan Ames (dan.ames@byu.edu).
+
+Source code available on GitHub at https://github.com/CUAHSI/HydroDesktop
+
+Copyright 2012-present, CUAHSI and Dan Ames.
+</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

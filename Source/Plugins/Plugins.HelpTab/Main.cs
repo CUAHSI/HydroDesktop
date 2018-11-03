@@ -115,12 +115,12 @@ namespace HydroDesktop.Plugins.HelpTab
             //Separator
             App.HeaderControl.Add(new SeparatorItem(HelpTabKey, _helpPanelName));
 
-            // Add a button to open the discussion forums
-            var discussionButton = new SimpleActionItem("Forum", discussionButton_Click);
+            // Add a button to open the wiki
+            var discussionButton = new SimpleActionItem("Wiki", discussionButton_Click);
             discussionButton.RootKey = HelpTabKey;
             discussionButton.LargeImage = Resources.discuss_32x32;
             discussionButton.SmallImage = Resources.discuss_16x16;
-            discussionButton.ToolTipText = "Open the HydroDesktop online discussion forum.";
+            discussionButton.ToolTipText = "Open the HydroDesktop online wiki.";
             discussionButton.GroupCaption = _helpPanelName;
             App.HeaderControl.Add(discussionButton);
 

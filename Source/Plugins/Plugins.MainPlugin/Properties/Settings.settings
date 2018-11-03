@@ -12,13 +12,13 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="remoteHelpUri" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://userguide.hydrodesktop.org</Value>
+      <Value Profile="(Default)">https://github.com/CUAHSI/HydroDesktop/blob/master/Documentation/HydroDesktop%20User%20Guide.pdf</Value>
     </Setting>
     <Setting Name="localHelpUri" Type="System.String" Scope="User">
       <Value Profile="(Default)">HydroDesktop User Guide.pdf</Value>
     </Setting>
     <Setting Name="quickStartUri" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://quickstart.hydrodesktop.org</Value>
+      <Value Profile="(Default)">https://github.com/CUAHSI/HydroDesktop/blob/master/Documentation/HydroDesktop_Quick_Start_Guide_1.5.pdf</Value>
     </Setting>
   </Settings>
 </SettingsFile>
