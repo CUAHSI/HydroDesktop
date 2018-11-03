@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroDesktop.MainApplication</RootNamespace>
-    <AssemblyName>HydroDesktop_1_6_dev</AssemblyName>
+    <AssemblyName>HydroDesktop</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -25,7 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\..\Binaries\HydroDesktop_1_6_dev.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\Binaries\HydroDesktop.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -45,8 +45,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>..\..\..\Binaries\HydroDesktop_1_6_dev.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\Binaries\HydroDesktop.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
