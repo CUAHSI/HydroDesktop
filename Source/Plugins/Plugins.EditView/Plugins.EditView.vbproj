@@ -33,7 +33,8 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.EditView\</OutputPath>
-    <DocumentationFile>HydroDesktop.Plugins.EditView.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <NoWarn>41999,42016</NoWarn>
     <WarningsAsErrors>
     </WarningsAsErrors>
@@ -55,7 +56,8 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\..\Binaries\Plugins\HydroDesktop.Plugins.EditView\</OutputPath>
-    <DocumentationFile>HydroDesktop.Plugins.EditView.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <WarningLevel>1</WarningLevel>
     <NoWarn>41999,42016</NoWarn>
     <DebugType>full</DebugType>

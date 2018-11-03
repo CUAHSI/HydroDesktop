@@ -1,10 +1,10 @@
 
 *.CopyComplete
+
 *.nupkg
 
 Binaries/
 Source/Packages/
 Source/.vs/*
-
-Source/.vs/hydrodesktop/v15/Server/sqlite3/storage.ide
-Source/.vs/hydrodesktop/v15/Server/sqlite3/storage.ide
+obj/
+bin/
