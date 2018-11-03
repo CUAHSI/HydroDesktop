@@ -24,11 +24,11 @@ namespace HydroDesktop.MainApplication
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var log = AppContext.Instance.Get<ILog>();
+            var log = HydroDesktop.Common.AppContext.Instance.Get<ILog>();
             Application.ApplicationExit += delegate
                 {
                     log.Info("Application Exit");
-                    AppContext.Instance.Dispose();
+                    HydroDesktop.Common.AppContext.Instance.Dispose();
                 };
             // Log all unhandled exceptions
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
@@ -37,7 +37,7 @@ namespace HydroDesktop.MainApplication
                     delegate(object sender, UnhandledExceptionEventArgs e)
                         {
                             ProcessUnhandled((Exception)e.ExceptionObject, true);
-                            AppContext.Instance.Dispose();
+                            HydroDesktop.Common.AppContext.Instance.Dispose();
                         };
 
             log.Info("Application Started");
@@ -52,7 +52,7 @@ namespace HydroDesktop.MainApplication
 
         private static void ProcessUnhandled(Exception ex, bool isFatal)
         {
-            var log = AppContext.Instance.Get<ILog>();
+            var log = HydroDesktop.Common.AppContext.Instance.Get<ILog>();
             log.Error(isFatal ? "Fatal" : "Unhandled", ex);
             var errorForm = new ErrorReportingForm(new ErrorReportingFormArgs
                 {
