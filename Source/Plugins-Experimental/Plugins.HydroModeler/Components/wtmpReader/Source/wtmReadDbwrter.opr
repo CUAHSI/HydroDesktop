@@ -1,0 +1,25 @@
+<guiComposition version="1.0">
+  <models>
+    <model omi="wtmpReader.omi" rect_x="100" rect_y="100" rect_width="115" rect_height="75" />
+    <model omi="Oatc.OpenMI.Gui.Trigger" rect_x="293" rect_y="72" rect_width="100" rect_height="100" />
+    <model omi="..\..\..\..\..\research\code\HydroDesktopHG\Installer\HydroModeler_example_configurations\example_configuration_02\data\cuahsi-his\DbWriter.omi" rect_x="102" rect_y="269" rect_width="115" rect_height="75" />
+  </models>
+  <links>
+    <uilink model_providing="Read PET input" model_accepting="Oatc.OpenMI.Gui.Trigger">
+      <link id="2" source_elementset="TempMax" source_quantity="Maximum Temperature" target_elementset="TriggerElementID" target_quantity="TriggerQuantityID" />
+    </uilink>
+    <uilink model_providing="Read PET input" model_accepting="DbWriter">
+      <link id="4" source_elementset="Date" source_quantity="Date" target_elementset="any element set" target_quantity="any quantity" />
+      <link id="5" source_elementset="TempDew" source_quantity="Dew Point Temperature" target_elementset="any element set" target_quantity="any quantity" />
+      <link id="6" source_elementset="Elev" source_quantity="Elevation" target_elementset="any element set" target_quantity="any quantity" />
+      <link id="7" source_elementset="Lat" source_quantity="Latitude" target_elementset="any element set" target_quantity="any quantity" />
+      <link id="8" source_elementset="Lon" source_quantity="Longitude" target_elementset="any element set" target_quantity="any quantity" />
+      <link id="9" source_elementset="TempMax" source_quantity="Maximum Temperature" target_elementset="any element set" target_quantity="any quantity" />
+      <link id="10" source_elementset="TempMin" source_quantity="Minimum Temperature" target_elementset="any element set" target_quantity="any quantity" />
+      <link id="11" source_elementset="StationID" source_quantity="StID" target_elementset="any element set" target_quantity="any quantity" />
+      <link id="12" source_elementset="Temp" source_quantity="Temperature" target_elementset="any element set" target_quantity="any quantity" />
+      <link id="13" source_elementset="Wind" source_quantity="wind speed" target_elementset="any element set" target_quantity="any quantity" />
+    </uilink>
+  </links>
+  <runproperties listenedeventtypes="00000000000" triggerinvoke="01/01/1900 00:00:00" runinsamethread="0" showeventsinlistbox="1" logfilename="CompositionRun.log" />
+</guiComposition>

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sourcePTPET", "source\sourcePTPET.csproj", "{B588386B-E1CC-4B4B-ADDD-E8A10AC1682C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testPTPET", "test\testPTPET.csproj", "{B7E24B61-44DE-4BAB-8234-CF79BAC7B7F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B588386B-E1CC-4B4B-ADDD-E8A10AC1682C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B588386B-E1CC-4B4B-ADDD-E8A10AC1682C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B588386B-E1CC-4B4B-ADDD-E8A10AC1682C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B588386B-E1CC-4B4B-ADDD-E8A10AC1682C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7E24B61-44DE-4BAB-8234-CF79BAC7B7F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7E24B61-44DE-4BAB-8234-CF79BAC7B7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7E24B61-44DE-4BAB-8234-CF79BAC7B7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7E24B61-44DE-4BAB-8234-CF79BAC7B7F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

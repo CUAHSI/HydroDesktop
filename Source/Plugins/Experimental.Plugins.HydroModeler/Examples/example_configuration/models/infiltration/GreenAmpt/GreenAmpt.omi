@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<LinkableComponent Type="GreenAmpt.GreenAmpt_LC" Assembly="..\..\..\bin\GreenAmpt.dll">
-  <Arguments>
-    <Argument Key="ConfigFile" ReadOnly="true" Value="./Config.xml" />
-    <Argument Key="OutDir" ReadOnly="true" Value="../" />
-  </Arguments>
-</LinkableComponent>

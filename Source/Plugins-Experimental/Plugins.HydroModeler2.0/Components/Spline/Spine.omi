@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LinkableComponent xmlns="http://www.openmi.org" Type="Spline.SplineEngine" Assembly=".\bin\Debug\Spline.dll">
+  <Arguments>
+    <Argument Key="ElevationPoints" ReadOnly="true" Value=".\Data\LIDARpoint.shp" />
+  </Arguments>
+</LinkableComponent>

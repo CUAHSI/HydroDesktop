@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<LinkableComponent Type="CUAHSI.HIS.DbWriter" Assembly="..\..\bin\DbWriter.dll">
+<Arguments>
+    <Argument Key="DbPath" ReadOnly="true" Value=".\example4.sqlite" />
+    <Argument Key="MethodDescription" ReadOnly="true" Value="Model Simulation 1"/>
+    <Argument Key="SourceOrganization" ReadOnly="true" Value="University of South Carolina"/>
+    <Argument Key="SourceAddress" ReadOnly="true" Value="300 Main St."/>
+    <Argument Key="SourceCity" ReadOnly="true" Value="Columbia"/>
+    <Argument Key="SourceState" ReadOnly="true" Value="SC"/>
+    <Argument Key="SourceZip" ReadOnly="true" Value="29206"/>
+    <Argument Key="SourceContact" ReadOnly="true" Value="none"/>
+    <Argument Key="VariableCategory" ReadOnly="true" Value="Hydrology"/>
+    <Argument Key="VariableSampleMedium" ReadOnly="true" Value="Surface Water"/>
+</Arguments>
+</LinkableComponent>

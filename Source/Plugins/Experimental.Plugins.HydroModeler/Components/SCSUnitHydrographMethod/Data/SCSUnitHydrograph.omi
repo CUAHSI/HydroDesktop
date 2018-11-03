@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<LinkableComponent Type="edu.sc.Models.Routing.SCSUnitHydrograph_LC" Assembly="..\Source\bin\Debug\SCSUnitHydrograph.dll">
-  <Arguments>
-    <Argument Key="ConfigFile" ReadOnly="true" Value="./Config.xml" />
-  </Arguments>
-</LinkableComponent>

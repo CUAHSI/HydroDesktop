@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="4a52aa15-10bf-4595-8343-ff12eb47755b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="MultiFacetedHISService.wsdl" MetadataType="Wsdl" ID="e365d840-3680-4281-aa8b-7f1557dfec10" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?wsdl" />
+    <MetadataFile FileName="MultiFacetedHISSvc.xsd" MetadataType="Schema" ID="677b24d9-d454-4aa9-82a9-3efce2c4d076" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd1" />
+    <MetadataFile FileName="MultiFacetedHISSvc1.xsd" MetadataType="Schema" ID="a0fa35b3-8f84-48fe-b730-8ef549317d3b" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd2" />
+    <MetadataFile FileName="MultiFacetedHISSvc2.xsd" MetadataType="Schema" ID="07b10544-2bd3-4e02-bb00-b7973abcb08a" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd3" />
+    <MetadataFile FileName="MultiFacetedHISSvc3.xsd" MetadataType="Schema" ID="3803a454-065f-42e1-8f01-119dd4759249" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?xsd=xsd0" />
+    <MetadataFile FileName="MultiFacetedHISSvc.disco" MetadataType="Disco" ID="e01353bf-5752-44d2-a29d-a3ea068f2cdd" SourceId="1" SourceUrl="http://cuahsi.eecs.tufts.edu/FacetedSearch/MultiFacetedHISSvc.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

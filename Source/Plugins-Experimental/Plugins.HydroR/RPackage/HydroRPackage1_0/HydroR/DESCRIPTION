@@ -1,0 +1,11 @@
+Package: HydroR
+Type: Package
+Title: HydroDesktop Plugin
+Version: 1.0
+Date: 2010-04-08
+Author: Stephanie Reeder 
+Depends: DBI, RSQLite
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: HydroDesktop Data Interface
+License: GPL-2 | GPL-3
+LazyLoad: yes

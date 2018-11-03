@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<LinkableComponent Type="PrecipitableWater.Precipitable_LC" Assembly=".\bin\Debug\PrecipitableWater.dll">
-  <Arguments>
-    <Argument Key="ConfigFile" ReadOnly="true" Value="./config.xml" />
-    <Argument Key="OutDir" ReadOnly="true" Value = "../" />
-  </Arguments>
-</LinkableComponent>

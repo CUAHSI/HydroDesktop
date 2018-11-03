@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Font Name="Tahoma" Size="8.25" />
+  <Interface Name="OpenMI.Standard.IArgument">
+    <Position X="16.5" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>IArgument.cs</FileName>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAAoAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IDataOperation">
+    <Position X="11.25" Y="9.75" Width="9" />
+    <TypeIdentifier>
+      <FileName>IDataOperation.cs</FileName>
+      <HashCode>AAgAAAAAAAAAgQAAAAgAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IDimension">
+    <Position X="16.5" Y="8" Width="3.75" />
+    <TypeIdentifier>
+      <FileName>IDimension.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IDiscreteTimes">
+    <Position X="0.5" Y="9.25" Width="5.5" />
+    <TypeIdentifier>
+      <FileName>IDiscreteTimes.cs</FileName>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAgAAAAAAAAACAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IElementSet">
+    <Position X="11" Y="6" Width="5" />
+    <TypeIdentifier>
+      <FileName>IElementSet.cs</FileName>
+      <HashCode>ICAABAAQAAAkgAAAAAAAAAAIAAAAAAOAABAAAAAEAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IEvent">
+    <Position X="0.5" Y="11.5" Width="3" />
+    <TypeIdentifier>
+      <FileName>IEvent.cs</FileName>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAEAIAAQAAAAAIAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IExchangeItem" Collapsed="true">
+    <Position X="7.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IExchangeItem.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.ILink">
+    <Position X="6.25" Y="0.75" Width="3.25" />
+    <TypeIdentifier>
+      <FileName>ILink.cs</FileName>
+      <HashCode>AAgAEAAAAAAggAAAAAAAAABAIAAACAAIQAAAAAIAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.ILinkableComponent">
+    <Position X="0.5" Y="3.25" Width="4.75" />
+    <TypeIdentifier>
+      <FileName>ILinkableComponent.cs</FileName>
+      <HashCode>AAQgAAAAICCAQQAEAQIAACAQAADAAAABAAIAAAEAAAg=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IListener">
+    <Position X="4" Y="11.5" Width="4" />
+    <TypeIdentifier>
+      <FileName>IListener.cs</FileName>
+      <HashCode>AQAAAAAAAAAAAAAAAEAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IManageState">
+    <Position X="0.5" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>IManageState.cs</FileName>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgABAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IOutputExchangeItem">
+    <Position X="5.5" Y="5" Width="4" />
+    <TypeIdentifier>
+      <FileName>IOutputExchangeItem.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IPublisher">
+    <Position X="0.5" Y="0.75" Width="4.75" />
+    <TypeIdentifier>
+      <FileName>IPublisher.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAQAAAAgAABAg=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IQuantity">
+    <Position X="10.75" Y="3.75" Width="3" />
+    <TypeIdentifier>
+      <FileName>IQuantity.cs</FileName>
+      <HashCode>AAAAAAAAAAAggAAAIAAAAAAAAAAAQAAAAAAAAAAAEAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IScalarSet">
+    <Position X="16.5" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>IScalarSet.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.ISpatialReference">
+    <Position X="8.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ISpatialReference.cs</FileName>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.ITimeSpan">
+    <Position X="10.75" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>ITimeSpan.cs</FileName>
+      <HashCode>AAIAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.ITimeStamp">
+    <Position X="13.25" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>ITimeStamp.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IUnit">
+    <Position X="13.5" Y="12" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>IUnit.cs</FileName>
+      <HashCode>AAAAAAAAAAAggAAQAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IValueSet">
+    <Position X="17" Y="2" Width="3" />
+    <TypeIdentifier>
+      <FileName>IValueSet.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IVector">
+    <Position X="19.5" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>IVector.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAABAAAAAgAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IVectorSet">
+    <Position X="18.75" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>IVectorSet.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.IInputExchangeItem">
+    <Position X="8" Y="6.75" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>IInputExchangeItem.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="OpenMI.Standard.ITime" Collapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ITime.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="OpenMI.Standard.DimensionBase">
+    <Position X="0.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IDimension.cs</FileName>
+      <HashCode>AAAAAAEAAAAAAAAAAAAABABACAAAAAAQAAAAAACEgQA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OpenMI.Standard.ElementType">
+    <Position X="2.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IElementSet.cs</FileName>
+      <HashCode>AEAAEAgAACQAAAAAAAACAAAAAQAAAAAAAAAgQAABAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OpenMI.Standard.EventType">
+    <Position X="4.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IEvent.cs</FileName>
+      <HashCode>BAAAECAAAEEAAAAAAAAABBAAIAAgQAAAAABAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="OpenMI.Standard.ValueType">
+    <Position X="6.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IQuantity.cs</FileName>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

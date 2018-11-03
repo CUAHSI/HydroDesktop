@@ -1,0 +1,10 @@
+﻿<?xml version="1.0"?>
+<LinkableComponent Type="LoadCalculator.LoadCalculatorLinkableEngine" Assembly="C:\_Code\Dev.CSharp\HydroDesktop\Binaries\Plugins\HydroModeler\example_configuration\bin\LoadCalculator.dll">
+  <Arguments>
+    <Argument Key="StartDateTime" ReadOnly="true" Value="10/27/2009 8:30:00AM" />
+    <Argument Key="TimeStepInSeconds" ReadOnly="true" Value="86400" />
+    <Argument Key="InputTimeSeries" ReadOnly="true" Value="Discharge:[cms]" />
+    <Argument Key="InputTimeSeries" ReadOnly="true" Value="Concentration:[mg/l] " />
+    <Argument Key="OutputTimeSeries" ReadOnly="true" Value="GillsCreek:Nitrogen Loading:[kg/day]:NumElements=1" /> 
+  </Arguments>
+</LinkableComponent>

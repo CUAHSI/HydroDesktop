@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="DbWriter">
+</Property><Property Name="Solution File" Value="C:\research\code\HydroDesktopHG\Source\Plugins\HydroModeler\Components\DbWriter\DbWriter.sln">
+</Property><Property Name="Date" Value="Tuesday, May 03, 2011">
+</Property><Property Name="Time" Value="11:50 AM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="DbWriter.sln" Description="File successfully backed up as C:\research\code\HydroDesktopHG\Source\Plugins\HydroModeler\Components\DbWriter\Backup\DbWriter.sln">
+</Event><Event ErrorLevel="0" Project="DbWriter" Source="Source\DbWriter.csproj" Description="Project file successfully backed up as C:\research\code\HydroDesktopHG\Source\Plugins\HydroModeler\Components\DbWriter\Backup\Source\DbWriter.csproj">
+</Event><Event ErrorLevel="0" Project="DbWriter" Source="Source\DbWriter.csproj.user" Description="Project user file successfully backed up as C:\research\code\HydroDesktopHG\Source\Plugins\HydroModeler\Components\DbWriter\Backup\Source\DbWriter.csproj.user">
+</Event><Event ErrorLevel="0" Project="DbWriter" Source="Source\DbWriter.cs" Description="File successfully backed up as C:\research\code\HydroDesktopHG\Source\Plugins\HydroModeler\Components\DbWriter\Backup\Source\DbWriter.cs">
+</Event><Event ErrorLevel="0" Project="DbWriter" Source="Source\Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\research\code\HydroDesktopHG\Source\Plugins\HydroModeler\Components\DbWriter\Backup\Source\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="DbWriter" Source="Source\DbWriter.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="DbWriter" Source="Source\DbWriter.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Test" Source="Test\Test.csproj" Description="Project file successfully backed up as C:\research\code\HydroDesktopHG\Source\Plugins\HydroModeler\Components\DbWriter\Backup\Test\Test.csproj">
+</Event><Event ErrorLevel="0" Project="Test" Source="Test\Test.cs" Description="File successfully backed up as C:\research\code\HydroDesktopHG\Source\Plugins\HydroModeler\Components\DbWriter\Backup\Test\Test.cs">
+</Event><Event ErrorLevel="0" Project="Test" Source="Test\Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\research\code\HydroDesktopHG\Source\Plugins\HydroModeler\Components\DbWriter\Backup\Test\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="Test" Source="Test\Test.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Test" Source="Test\Test.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="DbWriter.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="DbWriter.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="DbWriter" Source="Source\DbWriter.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="Test" Source="Test\Test.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

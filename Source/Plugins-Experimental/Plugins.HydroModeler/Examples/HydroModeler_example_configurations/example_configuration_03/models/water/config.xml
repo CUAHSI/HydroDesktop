@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Configuration>
+  <ExchangeItems>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>water</ID>
+        <Description>numerical-analysis, Columbia SC</Description>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Concentration</ID>
+        <Description>C</Description>
+        <Dimensions>
+          <Dimension>
+			<Base>Mass</Base>
+            <Power>1</Power>
+          </Dimension>
+		  <Dimension>
+			<Base>Length</Base>
+            <Power>-3</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>ppm</ID>
+          <Description>ppm</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+ 	<ID>sed</ID>
+        <Description>Smith Branch Watershed, Columbia SC</Description>
+        <Version>1</Version>
+        <ShapefilePath>.\StreamNet.shp</ShapefilePath>
+      </ElementSet>
+      <Quantity>
+        <ID>Concentration</ID>
+        <Description>Excess Rainfall</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>Mass</Base>
+            <Power>1</Power>
+          </Dimension>
+		  <Dimension>
+			<Base>Length</Base>
+            <Power>-3</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>in</ID>
+          <Description>inches</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+  </ExchangeItems>
+  <TimeHorizon>
+    <StartDateTime>08/20/2009 00:00:00 AM</StartDateTime>
+    <EndDateTime>08/20/2009 01:00:00 AM</EndDateTime>
+    <TimeStepInSeconds>1</TimeStepInSeconds>
+  </TimeHorizon>
+  <ModelInfo>
+    <ID>Water Advection</ID>
+    <Description>Calculates advection through water</Description>
+  </ModelInfo>
+</Configuration>

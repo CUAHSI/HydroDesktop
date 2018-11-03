@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LinkableComponent Type="PT_ET_LC.PT_Et_linkableComponent" Assembly="..\..\..\bin\PTPET.dll">
+  <Arguments>
+    <Argument Key="ConfigFile" ReadOnly="true" Value="./PT_PETconfig.xml" />
+    <Argument Key="DataFolder" ReadOnly="true" Value="./data" />
+    <Argument Key="OutDir" ReadOnly="true" Value = "./" />
+  </Arguments>
+</LinkableComponent>

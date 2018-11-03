@@ -1,1 +1,0 @@
-This folder contains additional binaries used during the development of new HydroModeler components.

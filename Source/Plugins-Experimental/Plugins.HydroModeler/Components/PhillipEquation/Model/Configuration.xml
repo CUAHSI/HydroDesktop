@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+  <ExchangeItems>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>Coweeta infiltration</ID>
+        <Description>Coweeta watershed, NC</Description>
+        <ShapefilePath>..\..\data\gis\weir18.shp</ShapefilePath>
+      </ElementSet>
+      <Quantity>
+        <ID>Infiltration rate</ID>
+        <Description>infiltratin rate in the watershed</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>L</Base>
+            <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>T</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm/day</ID>
+          <Description>millimeters per day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <OutputExchangeItem>
+      <ElementSet>
+        <ID>Coweeta runoff</ID>
+        <Description>Coweeta watershed, NC</Description>
+        <ShapefilePath>..\..\data\gis\weir18.shp</ShapefilePath>
+      </ElementSet>
+      <Quantity>
+        <ID>runoff rate</ID>
+        <Description>runoff rate in the watershed</Description>
+        <Dimensions>
+          <Dimension>
+            <Base>L</Base>
+            <Power>1</Power>
+          </Dimension>
+          <Dimension>
+            <Base>T</Base>
+            <Power>-1</Power>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>mm/day</ID>
+          <Description>millimeters per day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>scalar</ValueType>
+      </Quantity>
+    </OutputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Coweeta water table</ID>
+        <Description>Depth to the water table</Description>
+        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>Z</ID>
+        <Description>Depth to the water table</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>1</Power>
+            <Base>Length</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>m</ID>
+          <Description>meters</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Soil moisture storage</ID>
+        <Description>soil moisture storage</Description>
+        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>S</ID>
+        <Description>soil moisture storage</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>1</Power>
+            <Base>Length</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>m</ID>
+          <Description>meters</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Coweeta surface hydraulic conductivity</ID>
+        <Description>soil water hydraulic conductivity at surface</Description>
+        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>K_surf</ID>
+        <Description>soil water hydraulic conductivity at surface</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>1</Power>
+            <Base>Length</Base>
+          </Dimension>
+          <Dimension>
+            <Power>-1</Power>
+            <Base>time</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>m/day</ID>
+          <Description>meters/day</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Coweeta</ID>
+        <Description>Coweeta watershed,NC</Description>
+        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>P_surf</ID>
+        <Description>Porosity at the surface</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>0</Power>
+            <Base>Length</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>unitless</ID>
+          <Description>unitless</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+    <InputExchangeItem>
+      <ElementSet>
+        <ID>Coweeta</ID>
+        <Description>Coweeta watershed in NC</Description>
+        <ShapefilePath>..\..\data\gis\coweeta_18.shp</ShapefilePath>
+        <Version>1</Version>
+      </ElementSet>
+      <Quantity>
+        <ID>air-entry</ID>
+        <Description>Air entry pressure</Description>
+        <Dimensions>
+          <Dimension>
+            <Power>1</Power>
+            <Base>Length</Base>
+          </Dimension>
+        </Dimensions>
+        <Unit>
+          <ID>m</ID>
+          <Description>meters</Description>
+          <ConversionFactorToSI>1</ConversionFactorToSI>
+          <OffSetToSI>0</OffSetToSI>
+        </Unit>
+        <ValueType>Scalar</ValueType>
+      </Quantity>
+    </InputExchangeItem>
+  </ExchangeItems>
+  <TimeHorizon>
+    <StartDateTime>01/02/2006 12:00:00 AM</StartDateTime>
+    <EndDateTime>10/31/2009 12:00:00 AM</EndDateTime>
+    <TimeStepInSeconds>86400</TimeStepInSeconds>
+  </TimeHorizon>
+  <ModelInfo>
+    <ID>PhillipEquation</ID>
+    <Description>infiltration Model </Description>
+  </ModelInfo>
+</Configuration>

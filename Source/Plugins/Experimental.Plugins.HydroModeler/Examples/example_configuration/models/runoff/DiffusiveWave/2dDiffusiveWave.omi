@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<LinkableComponent Type="DiffusiveWave.LinkableComponent" Assembly="..\..\bin\DiffusiveWave.dll">
-  <Arguments>
-    <Argument Key="ConfigFile" ReadOnly="true" Value="./2dDiffusiveWaveConfig.xml" />
-    <Argument Key="SurfaceElevation" ReadOnly="true" Value="./elevation.txt" />
-    <Argument Key="FlowDirection" ReadOnly="true" Value="./fdr.txt" />
-  </Arguments>
-</LinkableComponent>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<LinkableComponent Type="CUAHSI.HIS.DbReader" Assembly=".\DbReader.dll">
+  <Arguments>
+    <Argument Key="DbReader" ReadOnly="true" Value="..\data\demo.db" />
+  </Arguments>
+</LinkableComponent>

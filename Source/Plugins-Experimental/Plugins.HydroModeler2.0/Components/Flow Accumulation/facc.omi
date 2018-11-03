@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LinkableComponent xmlns="http://www.openmi.org" Type="FlowAccumulation.FaccEngine" Assembly=".\bin\Debug\FlowAccumulation.dll">
+  <Arguments>
+  </Arguments>
+</LinkableComponent>
