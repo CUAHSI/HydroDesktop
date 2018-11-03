@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("HydroDesktop.Plugins.SplashScreenManager")]
 [assembly: AssemblyDescription("HydroDesktop SplashScreen")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hewlett-Packard Company")]
+[assembly: AssemblyCompany("CUAHSI")]
 [assembly: AssemblyProduct("HydroDesktop.Plugins.SplashScreenManager")]
-[assembly: AssemblyCopyright("Copyright © Hewlett-Packard Company 2012")]
+[assembly: AssemblyCopyright("Copyright © CUAHSI 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

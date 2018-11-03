@@ -1,16 +1,24 @@
 ﻿// ********************************************************************************************************
-// Product Name: TestViewer.exe
-// Description:  A very basic demonstration of the controls.
+// HydroDesktop Version 1.8
+// Developed for the Consortium of Universities for the Advancement of Hydrologic Science, Inc. (CUAHSI) as a desktop client for the CUAHSI Hydrologic Information System(see www.cuahsi.org).
+// Development team at Idaho State University and Brigham Young University lead by Dr.Dan Ames(dan.ames @byu.edu).
+// Source code available on GitHub at https://github.com/CUAHSI/HydroDesktop
+// Copyright 2012-present, CUAHSI and Dan Ames
+//
+// Please use the following citation to refer to HydroDesktop in your publications:
+// Ames, D.P., Horsburgh, J.S., Cao, Y., Kadlec, J., Whiteaker, T., and Valentine, D., 2012. HydroDesktop: Web Services-Based Software for Hydrologic Data Discovery, Download, Visualization, and Analysis.Environmental Modelling & Software.Vol 37, pp 146-156. http://dx.doi.org/10.1016/j.envsoft.2012.03.013
+//
+// Development of HydroDesktop was/is supported by the following grants from the National Science Foundation: OCI-1148453, OCI-1148090, EAR-0622374, EPS-0814387, EPS-0919514.
 // ********************************************************************************************************
 // The contents of this file are subject to the MIT License (MIT)
 // you may not use this file except in compliance with the License. You may obtain a copy of the License at
-// http://dotspatial.codeplex.com/license
+// http://www.hydrodesktop.org/
 //
 // Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
 // ANY KIND, either expressed or implied. See the License for the specific language governing rights and
 // limitations under the License.
 //
-// The Initial Developer of this Original Code is Ted Dunsford. Created during refactoring 2010.
+// The Initial Developers of this Original Code are Dan Ames and Ted Dunsford. Originally created in 2010.
 // ********************************************************************************************************
 
 namespace HydroDesktop.MainApplication
