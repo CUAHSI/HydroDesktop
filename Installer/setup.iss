@@ -10,12 +10,13 @@
 ;; define some version parameters
 ;; from http://stackoverflow.com/questions/357803/automated-build-version-number-with-wix-inno-setup-and-vs2008
 ;; or maybe http://agiletracksoftware.com/blog.html?id=4
-#define AppName "HydroDesktop 1.7.3"
-#define SrcApp "HydroDesktop_1_7_3.exe"
+#define AppName "HydroDesktop 1.8.0"
+#define SrcApp "HydroDesktop.exe"
 #define FileVerStr GetFileVersion(SrcApp)
 ;#define StripBuild(str VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
-#define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
-#define AppVerStr StripBuild(FileVerStr)
+;#define StripBuild(VerStr) Copy(VerStr, 1, RPos(".", VerStr)-1)
+;#define AppVerStr StripBuild(FileVerStr)
+#define AppVerStr "1.8.0"
 ;#define MyAppPublisher "CUAHSI"
 ;#define MyAppURL "http://www.hydrodesktop.org"
 ;#define MyOutputBaseFilename "HydroDesktop09_Installer"
@@ -40,13 +41,15 @@
 AppID={{52A4C3C0-3B01-4455-B3DF-CE7BCADCB714}
 
 PrivilegesRequired=poweruser
-MinVersion=,5.01
+MinVersion=5.01
 ; Necessary setting for the 64bit version
 ArchitecturesInstallIn64BitMode="x64 ia64"
 AppName={#AppName}
 AppVersion={#AppVerStr}
-AppVerName={#AppName} {#AppVerStr}
-UninstallDisplayName={#AppName} {#AppVerStr}
+;AppVerName={#AppName} {#AppVerStr}
+AppVerName={#AppName}
+;UninstallDisplayName={#AppName} {#AppVerStr}
+UninstallDisplayName={#AppName}
 VersionInfoVersion={#FileVerStr}
 VersionInfoTextVersion={#AppVerStr}
 ;OutputBaseFilename=MyApp-{#FileVerStr}-setup
@@ -54,10 +57,10 @@ AppPublisher="CUAHSI"
 AppPublisherURL="www.cuahsi.org"
 AppSupportURL="www.hydrodesktop.org"
 AppUpdatesURL="www.hydrodesktop.org"
-AppCopyright=Copyright © CUAHSI 2009-2012
+AppCopyright=Copyright © CUAHSI 2009-2018
 AppContact="www.hydrodesktop.org"
 VersionInfoCompany=CUAHSI [www.cuahsi.org]
-VersionInfoCopyright=Mozilla Public License (MPL) 1.1
+VersionInfoCopyright=MIT License [https://opensource.org/licenses/MIT]
 VersionInfoDescription=HydroDesktop [www.HydroDesktop.org]
 VersionInfoProductName="{#AppName} {#AppVerStr}
 VersionInfoProductVersion={#AppVerStr}
@@ -72,7 +75,7 @@ AlwaysShowComponentsList=false
 ;InfoBeforeFile=Source\..\..\Documents\Pre-install.txt
 ;InfoAfterFile=Source\..\..\Documents\Post-install.txt
 OutputDir=Releases
-OutputBaseFilename="HydroDesktop16_Installer"
+OutputBaseFilename="HydroDesktop_1_8_Installer"
 
 ;install to a separate directory
 UsePreviousAppDir=no
@@ -95,6 +98,12 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
+
+;Core Executable
+Source: "..\Binaries\HydroDesktop_1_8.exe"; DestDir: "{app}"; DestName: "{#SrcApp}"; Flags: ignoreversion;
+Source: "..\Binaries\HydroDesktop_1_8.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
+
+;DLLs
 Source: "..\Binaries\HydroDesktop.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\DotSpatial.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\Microsoft.*.dll"; DestDir: "{app}"; Flags: ignoreversion;
@@ -106,15 +115,13 @@ Source: "..\Binaries\ZedGraph.dll*"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Binaries\x86\SQLite.Interop.dll"; DestDir: "{app}\x86"; Flags: ignoreversion;
 Source: "..\Binaries\x64\SQLite.Interop.dll"; DestDir: "{app}\x64"; Flags: ignoreversion;
 Source: "..\Binaries\HydroDesktopSplashLogo.png"; DestDir: "{app}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_6_dev.exe"; DestDir: "{app}"; DestName: "{#SrcApp}"; Flags: ignoreversion;
-Source: "..\Binaries\HydroDesktop_1_6_dev.exe.config"; DestDir: "{app}"; DestName: "{#SrcApp}.config"; Flags: ignoreversion;
 
 ;Plugins
 Source: "..\Binaries\Plugins\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages"; Flags: recursesubdirs ignoreversion;
-Source: "..\Source\packages\DotSpatial.Plugins.ExtensionManager.1.1.4\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.ExtensionManager.1.1.4"; Flags: recursesubdirs ignoreversion;
-Source: "..\Source\packages\DotSpatial.Plugins.MenuBar.1.0.1200\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.MenuBar.1.0.1200"; Flags: recursesubdirs ignoreversion;
-Source: "..\Source\packages\DotSpatial.Plugins.Ribbon.1.4.38\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.Ribbon.1.4.38"; Flags: recursesubdirs ignoreversion;
-Source: "..\Source\packages\DotSpatial.Plugins.WebMap.1.1.0.0\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.WebMap.1.1.0.0"; Flags: recursesubdirs ignoreversion;
+;Source: "..\Source\packages\DotSpatial.Plugins.ExtensionManager.1.1.4\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.ExtensionManager.1.1.4"; Flags: recursesubdirs ignoreversion;
+;Source: "..\Source\packages\DotSpatial.Plugins.MenuBar.1.0.1200\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.MenuBar.1.0.1200"; Flags: recursesubdirs ignoreversion;
+;Source: "..\Source\packages\DotSpatial.Plugins.Ribbon.1.4.38\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.Ribbon.1.4.38"; Flags: recursesubdirs ignoreversion;
+;Source: "..\Source\packages\DotSpatial.Plugins.WebMap.1.1.0.0\*"; DestDir: "{commonappdata}\{#SrcApp}\Extensions\Packages\DotSpatial.Plugins.WebMap.1.1.0.0"; Flags: recursesubdirs ignoreversion;
 
 ;Windows Specific Folders
 Source: "..\Binaries\Support\Windows\*"; DestDir: "{app}\Support\Windows\"; Flags: ignoreversion;
